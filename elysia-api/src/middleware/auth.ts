@@ -1,5 +1,6 @@
 import { Elysia, status } from "elysia";
-import { jwtInstance, type JWTPayload } from "../utils/jwt";
+
+import { jwtInstance, type JWTPayload } from "@/utils/jwt";
 
 export interface AuthContext {
   userId: string;

@@ -1,6 +1,7 @@
 import { t } from "elysia";
 import { createInsertSchema } from "drizzle-typebox";
-import { table } from "../../database";
+
+import { table } from "@/database";
 
 export namespace UserModel {
   // Base insert schema from Drizzle

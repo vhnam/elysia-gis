@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 
-import db from "../../config/db";
-import { table } from "../../database";
+import db from "@/config/db";
+import { table } from "@/database";
 
 export abstract class UserService {
   static async getAllUsers(page = 1, limit = 10) {

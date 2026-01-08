@@ -3,7 +3,7 @@ import { t } from "elysia";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { createId } from "@paralleldrive/cuid2";
 
-import { spreads } from "../utils/db";
+import { spreads } from "@/utils/db";
 
 export const users = pgTable("users", {
   id: varchar("id")

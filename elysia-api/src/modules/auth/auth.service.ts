@@ -1,9 +1,10 @@
 import { status } from "elysia";
 import { eq } from "drizzle-orm";
 
+import db from "@/config/db";
+import { table } from "@/database";
+
 import type { AuthModel } from "./auth.model";
-import db from "../../config/db";
-import { table } from "../../database";
 
 export abstract class Auth {
   static async signIn({

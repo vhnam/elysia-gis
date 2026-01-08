@@ -1,5 +1,6 @@
 import jwt from "@elysiajs/jwt";
-import { env } from "../config/env";
+
+import { env } from "@/config/env";
 
 export const jwtInstance = jwt({
   name: "jwt",

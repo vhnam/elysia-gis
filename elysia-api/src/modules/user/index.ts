@@ -1,9 +1,10 @@
 import { Elysia, status } from "elysia";
 
+import { requireAuth } from "@/middleware";
+import { JWTPayload } from "@/utils/jwt";
+
 import { UserService } from "./user.service";
 import { UserModel } from "./user.model";
-import { requireAuth } from "../../middleware";
-import { JWTPayload } from "../../utils/jwt";
 
 export const user = new Elysia({
   prefix: "/api/v1/users",
