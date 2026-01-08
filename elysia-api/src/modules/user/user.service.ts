@@ -1,39 +1,75 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
-import { Value } from "@sinclair/typebox/value";
-import { t } from "elysia";
+import { eq, sql } from "drizzle-orm";
 
 import db from "../../config/db";
 import { table } from "../../database";
-import { type NewUser } from "../../database/users.schema";
 
-export const _createUser = createInsertSchema(table.users, {
-  email: t.String({ format: "email" }),
-});
+export abstract class UserService {
+  static async getAllUsers(page = 1, limit = 10) {
+    // Get paginated users
+    const users = await db
+      .select({
+        id: table.users.id,
+        username: table.users.username,
+        email: table.users.email,
+        createdAt: table.users.createdAt,
+      })
+      .from(table.users)
+      .limit(limit)
+      .offset((page - 1) * limit);
 
-export const _selectUser = createSelectSchema(table.users, {
-  email: t.String({ format: "email" }),
-});
+    // Get total count for pagination
+    const countResult = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(table.users);
 
-export type GetAllUsersParams = {
-  page?: number;
-  limit?: number;
-};
+    const total = countResult[0]?.count || 0;
 
-export async function getAllUsers({ page = 1, limit = 10 }: GetAllUsersParams) {
-  const rows = await db
-    .select()
-    .from(table.users)
-    .limit(limit)
-    .offset((page - 1) * limit);
-  return rows.map((row) => Value.Parse(_selectUser, row));
-}
+    return {
+      data: users,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
+  }
 
-export async function createUser(user: NewUser) {
-  const newUser = await db.insert(table.users).values(user).returning({
-    id: table.users.id,
-    username: table.users.username,
-    email: table.users.email,
-    createdAt: table.users.createdAt,
-  });
-  return newUser;
+  static async createUser(data: {
+    username: string;
+    email: string;
+    password: string;
+  }) {
+    // Hash password in service layer
+    const hashedPassword = await Bun.password.hash(data.password);
+
+    const [newUser] = await db
+      .insert(table.users)
+      .values({
+        username: data.username,
+        email: data.email,
+        password: hashedPassword,
+      })
+      .returning({
+        id: table.users.id,
+        username: table.users.username,
+        email: table.users.email,
+        createdAt: table.users.createdAt,
+      });
+
+    return newUser;
+  }
+
+  static async getUserById(userId: string) {
+    const users = await db
+      .select({
+        id: table.users.id,
+        username: table.users.username,
+        email: table.users.email,
+        createdAt: table.users.createdAt,
+      })
+      .from(table.users)
+      .where(eq(table.users.id, userId))
+      .limit(1);
+
+    return users[0] || null;
+  }
 }

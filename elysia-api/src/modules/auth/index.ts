@@ -2,22 +2,44 @@ import { Elysia } from "elysia";
 
 import { Auth } from "./auth.service";
 import { AuthModel } from "./auth.model";
+import { jwtInstance } from "../../utils/jwt";
+import { env } from "../../config/env";
 
-export const auth = new Elysia({ prefix: "/auth" }).get(
-  "/sign-in",
-  async ({ body, cookie: { session } }) => {
-    const response = await Auth.signIn(body);
+export const auth = new Elysia({
+  prefix: "/api/v1/auth",
+})
+  .use(jwtInstance)
+  .post(
+    "/sign-in",
+    async ({ body, cookie: { session }, jwt }) => {
+      const result = await Auth.signIn(body);
 
-    // Set session cookie
-    session.value = response.token;
+      // If authentication fails, return error response
+      if (!result || !result.username || !result.userId) {
+        return "Invalid username or password";
+      }
 
-    return response;
-  },
-  {
-    body: AuthModel.signInBody,
-    response: {
-      200: AuthModel.signInResponse,
-      400: AuthModel.signInInvalid,
+      const { username, userId } = result;
+
+      // Generate JWT token
+      const token = await jwt.sign({ userId, username });
+
+      // Set session cookie
+      session.value = token;
+      session.httpOnly = true;
+      session.secure = env.NODE_ENV === "production";
+
+      return {
+        username,
+        userId,
+        token,
+      };
     },
-  }
-);
+    {
+      body: AuthModel.signInBody,
+      response: {
+        200: AuthModel.signInResponse,
+        400: AuthModel.signInInvalid,
+      },
+    }
+  );

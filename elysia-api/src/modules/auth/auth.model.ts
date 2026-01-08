@@ -14,6 +14,7 @@ export namespace AuthModel {
   // Repeat for other models
   export const signInResponse = t.Object({
     username: t.String(),
+    userId: t.String(),
     token: t.String(),
   });
 

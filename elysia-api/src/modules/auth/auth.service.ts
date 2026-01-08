@@ -1,28 +1,45 @@
-// Service handle business logic, decoupled from Elysia controller
 import { status } from "elysia";
+import { eq } from "drizzle-orm";
 
 import type { AuthModel } from "./auth.model";
+import db from "../../config/db";
+import { table } from "../../database";
 
-// If the class doesn't need to store a property,
-// you may use `abstract class` to avoid class allocation
 export abstract class Auth {
-  static async signIn({ username, password }: AuthModel.signInBody) {
-    const user = await sql`
-			SELECT password
-			FROM users
-			WHERE username = ${username}
-			LIMIT 1`;
+  static async signIn({
+    username,
+    password,
+  }: AuthModel.signInBody): Promise<Partial<AuthModel.signInResponse>> {
+    // Use Drizzle ORM to query user
+    const users = await db
+      .select()
+      .from(table.users)
+      .where(eq(table.users.username, username))
+      .limit(1);
 
-    if (await Bun.password.verify(password, user.password))
-      // You can throw an HTTP error directly
+    // Check if user exists
+    if (users.length === 0) {
       throw status(
         400,
         "Invalid username or password" satisfies AuthModel.signInInvalid
       );
+    }
 
+    const user = users[0];
+
+    // Verify password
+    const isValid = await Bun.password.verify(password, user.password);
+    if (!isValid) {
+      throw status(
+        400,
+        "Invalid username or password" satisfies AuthModel.signInInvalid
+      );
+    }
+
+    // Return user info (JWT will be generated in the route handler using @elysiajs/jwt)
     return {
-      username,
-      token: await generateAndSaveTokenToDB(user.id),
+      username: user.username,
+      userId: user.id,
     };
   }
 }

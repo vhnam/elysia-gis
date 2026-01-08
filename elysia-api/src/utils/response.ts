@@ -1,21 +1,20 @@
-export type PaginationResponse<T> = {
+// Standard success response
+export interface SuccessResponse<T = unknown> {
+  success: true;
+  data: T;
+}
+
+// Standard pagination response (for documentation)
+export interface PaginationResponse<T = unknown> {
   data: T[];
   page: number;
   limit: number;
   total: number;
   totalPages: number;
-};
+}
 
-export const makePaginationResponse = <T>(
-  data: T[],
-  page: number,
-  limit: number
-) => {
-  return {
-    data: data,
-    page: page,
-    limit: limit,
-    total: data.length,
-    totalPages: Math.ceil(data.length / limit),
-  } satisfies PaginationResponse<T>;
-};
+// Helper to create success response
+export const success = <T>(data: T): SuccessResponse<T> => ({
+  success: true,
+  data,
+});

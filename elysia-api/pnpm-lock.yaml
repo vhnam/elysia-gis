@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@elysiajs/cors':
+        specifier: ^1.4.1
+        version: 1.4.1(elysia@1.4.21(@sinclair/typebox@0.34.47)(@types/bun@1.3.5)(exact-mirror@0.2.6(@sinclair/typebox@0.34.47))(file-type@21.3.0)(openapi-types@12.1.3))
+      '@elysiajs/jwt':
+        specifier: ^1.4.0
+        version: 1.4.0(elysia@1.4.21(@sinclair/typebox@0.34.47)(@types/bun@1.3.5)(exact-mirror@0.2.6(@sinclair/typebox@0.34.47))(file-type@21.3.0)(openapi-types@12.1.3))
       '@paralleldrive/cuid2':
         specifier: ^3.0.6
         version: 3.0.6
@@ -41,6 +47,16 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@elysiajs/cors@1.4.1':
+    resolution: {integrity: sha512-lQfad+F3r4mNwsxRKbXyJB8Jg43oAOXjRwn7sKUL6bcOW3KjUqUimTS+woNpO97efpzjtDE0tEjGk9DTw8lqTQ==}
+    peerDependencies:
+      elysia: '>= 1.4.0'
+
+  '@elysiajs/jwt@1.4.0':
+    resolution: {integrity: sha512-Z0PvZhQxdDeKZ8HslXzDoXXD83NKExNPmoiAPki3nI2Xvh5wtUrBH+zWOD17yP14IbRo8fxGj3L25MRCAPsgPA==}
+    peerDependencies:
+      elysia: '>= 1.4.0'
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -538,6 +554,9 @@ packages:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
     engines: {node: '>=16'}
 
+  jose@6.1.3:
+    resolution: {integrity: sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==}
+
   memoirist@0.4.0:
     resolution: {integrity: sha512-zxTgA0mSYELa66DimuNQDvyLq36AwDlTuVRbnQtB+VuTcKWm5Qc4z3WkSpgsFWHNhexqkIooqpv4hdcqrX5Nmg==}
 
@@ -595,6 +614,15 @@ snapshots:
   '@borewit/text-codec@0.2.1': {}
 
   '@drizzle-team/brocli@0.10.2': {}
+
+  '@elysiajs/cors@1.4.1(elysia@1.4.21(@sinclair/typebox@0.34.47)(@types/bun@1.3.5)(exact-mirror@0.2.6(@sinclair/typebox@0.34.47))(file-type@21.3.0)(openapi-types@12.1.3))':
+    dependencies:
+      elysia: 1.4.21(@sinclair/typebox@0.34.47)(@types/bun@1.3.5)(exact-mirror@0.2.6(@sinclair/typebox@0.34.47))(file-type@21.3.0)(openapi-types@12.1.3)
+
+  '@elysiajs/jwt@1.4.0(elysia@1.4.21(@sinclair/typebox@0.34.47)(@types/bun@1.3.5)(exact-mirror@0.2.6(@sinclair/typebox@0.34.47))(file-type@21.3.0)(openapi-types@12.1.3))':
+    dependencies:
+      elysia: 1.4.21(@sinclair/typebox@0.34.47)(@types/bun@1.3.5)(exact-mirror@0.2.6(@sinclair/typebox@0.34.47))(file-type@21.3.0)(openapi-types@12.1.3)
+      jose: 6.1.3
 
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
@@ -912,6 +940,8 @@ snapshots:
   ieee754@1.2.1: {}
 
   isexe@3.1.1: {}
+
+  jose@6.1.3: {}
 
   memoirist@0.4.0: {}
 
