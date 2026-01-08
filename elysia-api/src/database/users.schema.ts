@@ -12,9 +12,11 @@ export const users = pgTable("users", {
   username: varchar("username").notNull().unique(),
   password: varchar("password").notNull(),
   email: varchar("email").notNull().unique(),
-  salt: varchar("salt", { length: 64 }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export type User = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;
 
 export const db = {
   insert: spreads(

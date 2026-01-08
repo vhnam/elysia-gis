@@ -1,14 +1,10 @@
-import { createInsertSchema } from "drizzle-typebox";
 import { t } from "elysia";
 
-import { table } from "../../database";
+import { _createUser } from "./user.service";
 
 export namespace UserModel {
   export const createUserBody = () => {
-    const schema = createInsertSchema(table.users, {
-      email: t.String({ format: "email" }),
-    });
-    return t.Omit(schema, ["id", "salt", "createdAt"]);
+    return t.Omit(_createUser, ["id", "createdAt"]);
   };
 
   export const createUserResponse = t.Object({

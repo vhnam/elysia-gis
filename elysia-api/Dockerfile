@@ -8,6 +8,6 @@ RUN bun install
 # copy source
 COPY . .
 
-EXPOSE 3000
+EXPOSE 4000
 
 CMD ["bun", "run", "dev"]
