@@ -1,4 +1,4 @@
-import { users } from "./users.schema";
+import { users } from './users.schema';
 
 export const table = {
   users,

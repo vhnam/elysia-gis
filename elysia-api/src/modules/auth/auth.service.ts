@@ -1,17 +1,16 @@
-import { status } from "elysia";
-import { eq } from "drizzle-orm";
+import { eq } from 'drizzle-orm';
+import { status } from 'elysia';
 
-import db from "@/config/db";
-import { table } from "@/database";
+import db from '@/config/db';
+import { table } from '@/database';
 
-import type { AuthModel } from "./auth.model";
+import type { AuthModel } from './auth.model';
 
 export abstract class Auth {
   static async signIn({
     username,
     password,
-  }: AuthModel.signInBody): Promise<Partial<AuthModel.signInResponse>> {
-    // Use Drizzle ORM to query user
+  }: AuthModel.SignInBody): Promise<Partial<AuthModel.SignInResponse>> {
     const users = await db
       .select()
       .from(table.users)
@@ -22,7 +21,7 @@ export abstract class Auth {
     if (users.length === 0) {
       throw status(
         400,
-        "Invalid username or password" satisfies AuthModel.signInInvalid
+        'Invalid username or password' satisfies AuthModel.SignInInvalid,
       );
     }
 
@@ -33,7 +32,7 @@ export abstract class Auth {
     if (!isValid) {
       throw status(
         400,
-        "Invalid username or password" satisfies AuthModel.signInInvalid
+        'Invalid username or password' satisfies AuthModel.SignInInvalid,
       );
     }
 

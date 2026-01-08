@@ -1,14 +1,16 @@
-import { defineConfig } from "drizzle-kit";
+import { defineConfig } from 'drizzle-kit';
+
+import { env } from '@/config/env';
 
 export default defineConfig({
-  schema: "./src/database/*.schema.ts",
-  out: "./drizzle",
-  dialect: "postgresql",
+  schema: './src/database/*.schema.ts',
+  out: './drizzle',
+  dialect: 'postgresql',
   dbCredentials: {
-    host: process.env.DB_HOST || "localhost",
-    port: parseInt(process.env.DB_PORT || "5432"),
-    user: process.env.DB_USERNAME || "postgres",
-    password: process.env.DB_PASSWORD || "postgres",
-    database: process.env.DB_NAME || "elysia-gis",
+    host: env.DB_HOST,
+    port: env.DB_PORT,
+    user: env.DB_USER,
+    password: env.DB_PASSWORD,
+    database: env.DB_NAME,
   },
 });

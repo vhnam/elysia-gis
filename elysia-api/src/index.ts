@@ -1,9 +1,9 @@
-import { Elysia } from "elysia";
+import { Elysia } from 'elysia';
 
-import { env } from "./config/env";
-import { errorHandler, corsMiddleware } from "./middleware";
-import { auth } from "./modules/auth";
-import { user } from "./modules/user";
+import { env } from './config/env';
+import { corsMiddleware, errorHandler } from './middleware';
+import { auth } from './modules/auth';
+import { user } from './modules/user';
 
 const app = new Elysia()
   // 1. CORS middleware (must be first for preflight requests)
@@ -13,8 +13,8 @@ const app = new Elysia()
   .use(errorHandler)
 
   // 3. Health check endpoint (no auth required)
-  .get("/health", () => ({
-    status: "ok",
+  .get('/health', () => ({
+    status: 'ok',
     timestamp: new Date().toISOString(),
   }))
 
@@ -23,12 +23,12 @@ const app = new Elysia()
   .use(user)
 
   // 5. Catch-all 404
-  .all("*", ({ set }) => {
+  .all('*', ({ set }) => {
     set.status = 404;
     return {
       success: false,
-      error: "Not Found",
-      message: "The requested endpoint does not exist",
+      error: 'Not Found',
+      message: 'The requested endpoint does not exist',
       statusCode: 404,
     };
   })

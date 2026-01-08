@@ -1,17 +1,16 @@
-import { Elysia, status } from "elysia";
+import { Elysia, status } from 'elysia';
 
-import { requireAuth } from "@/middleware";
-import { JWTPayload } from "@/utils/jwt";
+import { requireAuth } from '@/middleware';
+import { JWTPayload } from '@/utils/jwt';
 
-import { UserService } from "./user.service";
-import { UserModel } from "./user.model";
+import { UserModel } from './user.model';
+import { UserService } from './user.service';
 
 export const user = new Elysia({
-  prefix: "/api/v1/users",
+  prefix: '/api/v1/users',
 })
-  // GET /api/v1/users - List all users with pagination
   .get(
-    "/",
+    '/',
     async ({ query }) => {
       const { page = 1, limit = 10 } = query;
       return await UserService.getAllUsers(page, limit);
@@ -21,11 +20,10 @@ export const user = new Elysia({
       response: {
         200: UserModel.paginatedUsersResponse,
       },
-    }
+    },
   )
-  // POST /api/v1/users - Create new user
   .post(
-    "/",
+    '/',
     async ({ body }) => {
       return await UserService.createUser(body);
     },
@@ -34,16 +32,15 @@ export const user = new Elysia({
       response: {
         200: UserModel.createUserResponse,
       },
-    }
+    },
   )
-  // GET /api/v1/users/:id - Get user by ID
   .get(
-    "/:id",
+    '/:id',
     async ({ params }) => {
       const user = await UserService.getUserById(params.id);
 
       if (!user) {
-        throw status(404, "User not found");
+        throw status(404, 'User not found');
       }
 
       return user;
@@ -52,13 +49,11 @@ export const user = new Elysia({
       response: {
         200: UserModel.getUserResponse,
       },
-    }
+    },
   )
-  // Protected routes (require authentication)
   .use(requireAuth)
-  // GET /api/v1/users/me - Get current user profile
   .get(
-    "/me",
+    '/me',
     async ({ jwt }) => {
       // The 'jwt' object does not have a 'user' property directly.
       // Instead, use the jwt.verify() method to get the payload.
@@ -67,7 +62,7 @@ export const user = new Elysia({
       const userProfile = await UserService.getUserById(payload.userId);
 
       if (!userProfile) {
-        throw status(404, "User not found");
+        throw status(404, 'User not found');
       }
 
       return userProfile;
@@ -76,5 +71,5 @@ export const user = new Elysia({
       response: {
         200: UserModel.getUserResponse,
       },
-    }
+    },
   );

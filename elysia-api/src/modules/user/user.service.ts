@@ -1,11 +1,10 @@
-import { eq, sql } from "drizzle-orm";
+import { eq, sql } from 'drizzle-orm';
 
-import db from "@/config/db";
-import { table } from "@/database";
+import db from '@/config/db';
+import { table } from '@/database';
 
 export abstract class UserService {
   static async getAllUsers(page = 1, limit = 10) {
-    // Get paginated users
     const users = await db
       .select({
         id: table.users.id,
@@ -17,7 +16,6 @@ export abstract class UserService {
       .limit(limit)
       .offset((page - 1) * limit);
 
-    // Get total count for pagination
     const countResult = await db
       .select({ count: sql<number>`count(*)::int` })
       .from(table.users);
@@ -38,7 +36,6 @@ export abstract class UserService {
     email: string;
     password: string;
   }) {
-    // Hash password in service layer
     const hashedPassword = await Bun.password.hash(data.password);
 
     const [newUser] = await db

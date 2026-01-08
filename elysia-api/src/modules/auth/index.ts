@@ -1,22 +1,23 @@
-import { Elysia } from "elysia";
+import { Elysia } from 'elysia';
 
-import { Auth } from "./auth.service";
-import { AuthModel } from "./auth.model";
-import { jwtInstance } from "../../utils/jwt";
-import { env } from "../../config/env";
+import { env } from '@/config/env';
+import { jwtInstance } from '@/utils/jwt';
+
+import { AuthModel } from './auth.model';
+import { Auth } from './auth.service';
 
 export const auth = new Elysia({
-  prefix: "/api/v1/auth",
+  prefix: '/api/v1/auth',
 })
   .use(jwtInstance)
   .post(
-    "/sign-in",
+    '/sign-in',
     async ({ body, cookie: { session }, jwt }) => {
       const result = await Auth.signIn(body);
 
       // If authentication fails, return error response
       if (!result || !result.username || !result.userId) {
-        return "Invalid username or password";
+        return 'Invalid username or password';
       }
 
       const { username, userId } = result;
@@ -27,7 +28,7 @@ export const auth = new Elysia({
       // Set session cookie
       session.value = token;
       session.httpOnly = true;
-      session.secure = env.NODE_ENV === "production";
+      session.secure = env.NODE_ENV === 'production';
 
       return {
         username,
@@ -41,5 +42,5 @@ export const auth = new Elysia({
         200: AuthModel.signInResponse,
         400: AuthModel.signInInvalid,
       },
-    }
+    },
   );
