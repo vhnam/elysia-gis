@@ -1,0 +1,14 @@
+{
+  "name": "elysia-api",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "start": "bun src/index.ts"
+  },
+  "dependencies": {
+    "elysia": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3"
+  }
+}
