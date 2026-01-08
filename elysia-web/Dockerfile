@@ -1,6 +1,6 @@
-FROM node:latest
+FROM node:22.21.1-alpine3.23
 
-WORKDIR /src
+WORKDIR /elysia-web
 
 RUN npm install -g pnpm
 
@@ -13,4 +13,3 @@ COPY . .
 EXPOSE 3000
 
 CMD ["pnpm", "dev"]
-

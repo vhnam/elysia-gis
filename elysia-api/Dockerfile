@@ -1,6 +1,6 @@
 FROM oven/bun:latest
 
-WORKDIR /src
+WORKDIR /elysia-api
 
 COPY package.json bun.lockb* ./
 RUN bun install
