@@ -1,10 +1,16 @@
-import { eq, sql } from 'drizzle-orm';
+import { eq, like, sql } from 'drizzle-orm';
 
 import db from '@/config/db';
 import { table } from '@/database';
 
+import { UserModel } from './user.model';
+
 export abstract class UserService {
-  static async getAllUsers(page = 1, limit = 10) {
+  static async getAllUsers({
+    search,
+    page = 1,
+    limit = 10,
+  }: UserModel.GetUsersRequest): Promise<UserModel.GetUsersResponse> {
     const users = await db
       .select({
         id: table.users.id,
@@ -14,7 +20,8 @@ export abstract class UserService {
       })
       .from(table.users)
       .limit(limit)
-      .offset((page - 1) * limit);
+      .offset((page - 1) * limit)
+      .where(search ? like(table.users.username, `%${search}%`) : undefined);
 
     const countResult = await db
       .select({ count: sql<number>`count(*)::int` })

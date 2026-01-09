@@ -12,31 +12,16 @@ export const user = new Elysia({
   .get(
     '/',
     async ({ query }) => {
-      const { page = 1, limit = 10 } = query;
-      return await UserService.getAllUsers(page, limit);
+      return await UserService.getAllUsers(query as UserModel.GetUsersRequest);
     },
     {
-      query: UserModel.paginationQuery,
-      response: {
-        200: UserModel.paginatedUsersResponse,
-      },
-    },
-  )
-  .post(
-    '/',
-    async ({ body }) => {
-      return await UserService.createUser(body);
-    },
-    {
-      body: UserModel.createUserBody,
-      response: {
-        200: UserModel.createUserResponse,
-      },
+      query: UserModel.getUsersRequest,
+      response: UserModel.getUsersResponse,
     },
   )
   .get(
     '/:id',
-    async ({ params }) => {
+    async ({ params }: { params: UserModel.GetUserRequest }) => {
       const user = await UserService.getUserById(params.id);
 
       if (!user) {
@@ -46,9 +31,17 @@ export const user = new Elysia({
       return user;
     },
     {
-      response: {
-        200: UserModel.getUserResponse,
-      },
+      response: UserModel.getUserResponse,
+    },
+  )
+  .post(
+    '/',
+    async ({ body }) => {
+      return await UserService.createUser(body);
+    },
+    {
+      body: UserModel.createUserRequest,
+      response: UserModel.createUserResponse,
     },
   )
   .use(requireAuth)

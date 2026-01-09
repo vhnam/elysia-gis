@@ -10,7 +10,7 @@ export abstract class Auth {
   static async signIn({
     username,
     password,
-  }: AuthModel.SignInBody): Promise<Partial<AuthModel.SignInResponse>> {
+  }: AuthModel.SignInRequest): Promise<Partial<AuthModel.SignInResponse>> {
     const users = await db
       .select()
       .from(table.users)

@@ -1,7 +1,7 @@
 import { t } from 'elysia';
 
 export namespace AuthModel {
-  export const signInBody = t.Object({
+  export const signInRequest = t.Object({
     username: t.String(),
     password: t.String(),
   });
@@ -14,7 +14,7 @@ export namespace AuthModel {
 
   export const signInInvalid = t.Literal('Invalid username or password');
 
-  export type SignInBody = typeof signInBody.static;
+  export type SignInRequest = typeof signInRequest.static;
   export type SignInResponse = typeof signInResponse.static;
   export type SignInInvalid = typeof signInInvalid.static;
 }

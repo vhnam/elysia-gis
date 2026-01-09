@@ -34,11 +34,13 @@ A modern, type-safe REST API built with [ElysiaJS](https://elysiajs.com), Bun, a
 
 1. Clone the repository
 2. Install dependencies:
+
    ```bash
    pnpm install
    ```
 
 3. Copy environment variables:
+
    ```bash
    cp .env.example .env
    ```
@@ -46,6 +48,7 @@ A modern, type-safe REST API built with [ElysiaJS](https://elysiajs.com), Bun, a
 4. Update `.env` with your database credentials
 
 5. Run database migrations:
+
    ```bash
    pnpm db:push
    ```
@@ -70,6 +73,7 @@ Returns server status.
 ### Authentication
 
 #### Sign In
+
 ```
 POST /api/v1/auth/sign-in
 Content-Type: application/json
@@ -90,6 +94,7 @@ Response:
 ### Users
 
 #### List Users (Paginated)
+
 ```
 GET /api/v1/users?page=1&limit=10
 
@@ -111,6 +116,7 @@ Response:
 ```
 
 #### Create User
+
 ```
 POST /api/v1/users
 Content-Type: application/json
@@ -131,6 +137,7 @@ Response:
 ```
 
 #### Get User by ID
+
 ```
 GET /api/v1/users/:id
 
@@ -144,6 +151,7 @@ Response:
 ```
 
 #### Get Current User (Protected)
+
 ```
 GET /api/v1/users/me
 Authorization: Bearer <token>
@@ -181,6 +189,7 @@ All errors follow this format:
 ```
 
 Common status codes:
+
 - `400` - Bad Request / Validation Error
 - `401` - Unauthorized
 - `404` - Not Found
@@ -232,21 +241,25 @@ This project follows ElysiaJS best practices:
 ### Migrations
 
 Generate migrations:
+
 ```bash
 pnpm db:generate
 ```
 
 Apply migrations:
+
 ```bash
 pnpm db:migrate
 ```
 
 Push schema changes:
+
 ```bash
 pnpm db:push
 ```
 
 Open Drizzle Studio:
+
 ```bash
 pnpm db:studio
 ```
@@ -254,6 +267,7 @@ pnpm db:studio
 ## Development
 
 Run in development mode with hot reload:
+
 ```bash
 pnpm dev
 ```
@@ -261,6 +275,7 @@ pnpm dev
 ## Production
 
 Build and run in production:
+
 ```bash
 pnpm start
 ```

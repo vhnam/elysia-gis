@@ -37,7 +37,7 @@ export const auth = new Elysia({
       };
     },
     {
-      body: AuthModel.signInBody,
+      body: AuthModel.signInRequest,
       response: {
         200: AuthModel.signInResponse,
         400: AuthModel.signInInvalid,
