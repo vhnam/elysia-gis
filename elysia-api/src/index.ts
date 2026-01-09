@@ -1,4 +1,5 @@
 import { Elysia } from 'elysia';
+import { openapi } from '@elysiajs/openapi';
 
 import { env } from './config/env';
 import { corsMiddleware, errorHandler } from './middleware';
@@ -6,11 +7,11 @@ import { auth } from './modules/auth';
 import { user } from './modules/user';
 
 const app = new Elysia()
-  // 1. CORS middleware (must be first for preflight requests)
+  // 1.  Middlewares
   .use(corsMiddleware)
-
-  // 2. Error handler (global)
   .use(errorHandler)
+
+  .use(openapi())
 
   // 3. Health check endpoint (no auth required)
   .get('/health', () => ({

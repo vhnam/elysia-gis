@@ -9,6 +9,7 @@ import { UserService } from './user.service';
 export const user = new Elysia({
   prefix: '/api/v1/users',
 })
+  .use(requireAuth)
   .get(
     '/',
     async ({ query }) => {
@@ -31,7 +32,7 @@ export const user = new Elysia({
       return user;
     },
     {
-      response: UserModel.getUserResponse,
+      response: UserModel.userResponse,
     },
   )
   .post(
@@ -41,10 +42,9 @@ export const user = new Elysia({
     },
     {
       body: UserModel.createUserRequest,
-      response: UserModel.createUserResponse,
+      response: UserModel.userResponse,
     },
   )
-  .use(requireAuth)
   .get(
     '/me',
     async ({ jwt }) => {
@@ -62,7 +62,7 @@ export const user = new Elysia({
     },
     {
       response: {
-        200: UserModel.getUserResponse,
+        200: UserModel.userResponse,
       },
     },
   );

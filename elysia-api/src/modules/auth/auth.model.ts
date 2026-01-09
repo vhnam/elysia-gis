@@ -2,8 +2,8 @@ import { t } from 'elysia';
 
 export namespace AuthModel {
   export const signInRequest = t.Object({
-    username: t.String(),
-    password: t.String(),
+    username: t.String({ minLength: 3 }),
+    password: t.String({ minLength: 8 }),
   });
 
   export const signInResponse = t.Object({

@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 import { status } from 'elysia';
 
 import db from '@/config/db';
-import { table } from '@/database';
+import { tableUsers } from '@/modules/user/user.table';
 
 import type { AuthModel } from './auth.model';
 
@@ -13,8 +13,8 @@ export abstract class Auth {
   }: AuthModel.SignInRequest): Promise<Partial<AuthModel.SignInResponse>> {
     const users = await db
       .select()
-      .from(table.users)
-      .where(eq(table.users.username, username))
+      .from(tableUsers)
+      .where(eq(tableUsers.username, username))
       .limit(1);
 
     // Check if user exists

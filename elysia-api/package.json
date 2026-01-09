@@ -22,6 +22,7 @@
     "postgres": "^3.4.8"
   },
   "devDependencies": {
+    "@elysiajs/openapi": "^1.4.13",
     "@sinclair/typebox": "^0.34.47",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/bun": "^1.3.5",
