@@ -1,5 +1,8 @@
 import { useForm } from '@tanstack/react-form';
 import { useRouter, useSearch } from '@tanstack/react-router';
+import { AxiosError } from 'axios';
+import { startTransition } from 'react';
+import { toast } from 'sonner';
 
 import { resetPasswordSchema } from '@/schemas/auth.schema';
 
@@ -21,8 +24,17 @@ export const useResetPassword = () => {
       onSubmit: resetPasswordSchema,
     },
     onSubmit: async ({ value }) => {
-      await resetPasswordMutation.mutateAsync(value);
-      router.navigate({ to: '/auth/login' });
+      try {
+        await resetPasswordMutation.mutateAsync(value);
+        startTransition(() => {
+          router.navigate({ to: '/auth/login' });
+        });
+        toast.success('Password reset successfully');
+      } catch (error) {
+        toast.error(
+          (error as AxiosError).message || 'Failed to send reset email',
+        );
+      }
     },
   });
 

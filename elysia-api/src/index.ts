@@ -2,10 +2,12 @@ import { openapi } from '@elysiajs/openapi';
 import { Elysia } from 'elysia';
 
 import { env } from '@/config/env';
+
+import { authController } from '@/modules/auth';
+import { healthController } from '@/modules/health';
+import { userController } from '@/modules/user';
+
 import { corsMiddleware, errorHandler } from '@/middleware';
-import { auth } from '@/modules/auth';
-import { health } from '@/modules/health';
-import { user } from '@/modules/user';
 
 const app = new Elysia()
   // 1.  Middlewares
@@ -15,9 +17,9 @@ const app = new Elysia()
   .use(openapi())
 
   // 2. Modules
-  .use(health)
-  .use(auth)
-  .use(user)
+  .use(healthController)
+  .use(authController)
+  .use(userController)
 
   // 3. Catch-all 404
   .all('*', ({ set }) => {
@@ -30,7 +32,10 @@ const app = new Elysia()
     };
   })
 
-  .listen(env.API_PORT);
+  .listen({
+    port: env.API_PORT,
+    hostname: '0.0.0.0',
+  });
 
-console.log(`Server running at http://localhost:${env.API_PORT}`);
+console.log(`Server running at http://0.0.0.0:${env.API_PORT}`);
 console.log(`API available at http://localhost:${env.API_PORT}/api/v1`);

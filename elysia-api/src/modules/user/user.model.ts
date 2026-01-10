@@ -21,6 +21,11 @@ export namespace UserModel {
     password: t.String(),
   });
 
+  export const updateUserRequest = t.Object({
+    email: t.Optional(t.String({ format: 'email' })),
+    password: t.Optional(t.String()),
+  });
+
   /**
    * Response schemas
    */
@@ -45,6 +50,7 @@ export namespace UserModel {
    */
 
   export type CreateUserRequest = typeof createUserRequest.static;
+  export type UpdateUserRequest = typeof updateUserRequest.static;
   export type UserResponse = typeof userResponse.static;
   export type GetUserRequest = typeof getUserRequest.static;
   export type GetUsersRequest = typeof getUsersRequest.static;

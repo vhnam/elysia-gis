@@ -1,5 +1,6 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router';
 import type { PropsWithChildren } from 'react';
+import { Toaster } from 'sonner';
 
 import appCss from '@/styles.css?url';
 
@@ -38,6 +39,7 @@ function RootDocument({ children }: PropsWithChildren) {
       </head>
       <body>
         {children}
+        <Toaster />
         <Scripts />
       </body>
     </html>

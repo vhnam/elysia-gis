@@ -4,7 +4,14 @@
   "trailingComma": "all",
   "singleQuote": true,
   "semi": true,
-  "importOrder": ["^@/(.*)$", "^[./]"],
+  "importOrder": [
+    "^@/config/(.*)$",
+    "^@/utils/(.*)$",
+    "^@/modules/(.*)$",
+    "^@/emails/(.*)$",
+    "^@/(.*)$",
+    "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports"]

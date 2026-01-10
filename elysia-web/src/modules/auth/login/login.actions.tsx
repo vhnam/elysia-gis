@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import { useRouter } from '@tanstack/react-router';
+import { startTransition } from 'react';
 
 import { loginSchema } from '@/schemas/auth.schema';
 
@@ -19,7 +20,9 @@ export const useLogin = () => {
     },
     onSubmit: async ({ value }) => {
       await loginMutation.mutateAsync(value);
-      router.navigate({ to: '/' });
+      startTransition(() => {
+        router.navigate({ to: '/' });
+      });
     },
   });
 

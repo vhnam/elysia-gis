@@ -1,5 +1,7 @@
 import { useForm } from '@tanstack/react-form';
-import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { startTransition, useState } from 'react';
+import { toast } from 'sonner';
 
 import { forgotPasswordSchema } from '@/schemas/auth.schema';
 
@@ -8,7 +10,19 @@ import { useForgotPasswordMutation } from '@/queries/auth';
 export const useForgotPassword = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const forgotPasswordMutation = useForgotPasswordMutation();
+  const forgotPasswordMutation = useForgotPasswordMutation({
+    onSuccess: () => {
+      startTransition(() => {
+        setIsSuccess(true);
+      });
+      toast.success('Reset email sent successfully');
+    },
+    onError: (error) => {
+      toast.error(
+        (error as AxiosError).message || 'Failed to send reset email',
+      );
+    },
+  });
 
   const form = useForm({
     defaultValues: {
@@ -17,9 +31,10 @@ export const useForgotPassword = () => {
     validators: {
       onSubmit: forgotPasswordSchema,
     },
-    onSubmit: async ({ value }) => {
-      await forgotPasswordMutation.mutateAsync(value);
-      setIsSuccess(true);
+    onSubmit: ({ value }) => {
+      startTransition(() => {
+        forgotPasswordMutation.mutate(value);
+      });
     },
   });
 

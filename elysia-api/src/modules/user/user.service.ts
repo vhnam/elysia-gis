@@ -38,6 +38,23 @@ export abstract class UserService {
     };
   }
 
+  static async getUserById(
+    userId: string,
+  ): Promise<UserModel.UserResponse | null> {
+    const users = await db
+      .select({
+        id: tableUsers.id,
+        username: tableUsers.username,
+        email: tableUsers.email,
+        createdAt: tableUsers.createdAt,
+      })
+      .from(tableUsers)
+      .where(eq(tableUsers.id, userId))
+      .limit(1);
+
+    return users[0] || null;
+  }
+
   static async createUser(
     data: UserModel.CreateUserRequest,
   ): Promise<UserModel.UserResponse> {
@@ -60,20 +77,28 @@ export abstract class UserService {
     return newUser;
   }
 
-  static async getUserById(
+  static async updateUser(
     userId: string,
-  ): Promise<UserModel.UserResponse | null> {
-    const users = await db
-      .select({
+    data: UserModel.UpdateUserRequest,
+  ): Promise<UserModel.UserResponse> {
+    const hashedPassword = data.password
+      ? await Bun.password.hash(data.password)
+      : undefined;
+
+    const [updatedUser] = await db
+      .update(tableUsers)
+      .set({
+        ...(hashedPassword && { password: hashedPassword }),
+        email: data.email,
+      })
+      .where(eq(tableUsers.id, userId))
+      .returning({
         id: tableUsers.id,
         username: tableUsers.username,
         email: tableUsers.email,
         createdAt: tableUsers.createdAt,
-      })
-      .from(tableUsers)
-      .where(eq(tableUsers.id, userId))
-      .limit(1);
+      });
 
-    return users[0] || null;
+    return updatedUser;
   }
 }
