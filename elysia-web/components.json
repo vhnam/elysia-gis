@@ -10,14 +10,14 @@
     "cssVariables": true,
     "prefix": ""
   },
-  "iconLibrary": "lucide",
+  "iconLibrary": "tabler",
   "aliases": {
     "components": "@/components",
     "utils": "@/utils/ui",
     "ui": "@/components/ui",
     "hooks": "@/hooks"
   },
-  "menuColor": "default",
+  "menuColor": "inverted",
   "menuAccent": "subtle",
   "registries": {}
 }

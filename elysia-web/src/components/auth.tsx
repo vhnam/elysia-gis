@@ -1,4 +1,4 @@
-import { GalleryVerticalEndIcon } from 'lucide-react';
+import { IconMap2 } from '@tabler/icons-react';
 import type { PropsWithChildren } from 'react';
 
 export const Auth = ({ children }: PropsWithChildren) => {
@@ -7,7 +7,7 @@ export const Auth = ({ children }: PropsWithChildren) => {
       <div className="flex w-full max-w-md flex-col gap-6">
         <a href="/" className="flex items-center gap-2 self-center font-medium">
           <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-            <GalleryVerticalEndIcon className="size-4" />
+            <IconMap2 className="size-4" />
           </div>
           Elysia GIS
         </a>
