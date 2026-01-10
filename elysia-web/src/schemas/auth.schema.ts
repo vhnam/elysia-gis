@@ -1,6 +1,16 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-  username: z.string().min(1),
-  password: z.string().min(1),
+  username: z.string().min(1).max(255),
+  password: z.string().min(1).max(255),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.email().min(1).max(255),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1).max(255),
+  password: z.string().min(1).max(255),
+  confirmPassword: z.string().min(1).max(255),
 });

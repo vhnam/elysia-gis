@@ -1,3 +1,4 @@
+import { useResetPassword } from './reset-password.actions';
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -17,17 +18,18 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
-import { useLogin } from './login.actions';
 
-export const LoginForm = () => {
-  const { form } = useLogin();
+export const ResetPasswordForm = () => {
+  const { form } = useResetPassword();
 
   return (
     <div className={cn('flex flex-col gap-6')}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Welcome back to your account</CardDescription>
+          <CardTitle className="text-xl">Reset Password</CardTitle>
+          <CardDescription>
+            Reset your password. Please enter your new password and confirm it.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -37,36 +39,10 @@ export const LoginForm = () => {
             }}
           >
             <FieldGroup>
-              <form.Field name="username">
-                {(field) => (
-                  <Field>
-                    <FieldLabel htmlFor={field.name}>Username</FieldLabel>
-                    <Input
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      onBlur={field.handleBlur}
-                      type="text"
-                      placeholder="Enter your username"
-                      required
-                    />
-                    <FieldError errors={field.state.meta.errors} />
-                  </Field>
-                )}
-              </form.Field>
               <form.Field name="password">
                 {(field) => (
                   <Field>
-                    <div className="flex items-center">
-                      <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                      <a
-                        href="/auth/forgot-password"
-                        className="ml-auto text-sm underline-offset-4 hover:underline"
-                      >
-                        Forgot your password?
-                      </a>
-                    </div>
+                    <FieldLabel htmlFor={field.name}>New Password</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -74,6 +50,27 @@ export const LoginForm = () => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       type="password"
+                      placeholder="Enter your new password"
+                      required
+                    />
+                    <FieldError errors={field.state.meta.errors} />
+                  </Field>
+                )}
+              </form.Field>
+              <form.Field name="confirmPassword">
+                {(field) => (
+                  <Field>
+                    <FieldLabel htmlFor={field.name}>
+                      Confirm Password
+                    </FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                      type="password"
+                      placeholder="Confirm your new password"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />
@@ -82,7 +79,7 @@ export const LoginForm = () => {
               </form.Field>
               <Field>
                 <Button type="submit" disabled={form.state.isSubmitting}>
-                  {form.state.isSubmitting ? 'Logging in...' : 'Login'}
+                  {form.state.isSubmitting ? 'Resetting password...' : 'Reset'}
                 </Button>
               </Field>
             </FieldGroup>
@@ -91,9 +88,9 @@ export const LoginForm = () => {
       </Card>
 
       <FieldDescription className="px-6 text-center">
-        Don&apos;t have an account?
+        Remember your password?
         <br />
-        Please contact <a href="#">administrator</a>
+        <a href="/auth/login">Login</a>
       </FieldDescription>
     </div>
   );
