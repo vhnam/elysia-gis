@@ -1,10 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Login } from '@/modules/auth/login.component'
+import { createFileRoute } from '@tanstack/react-router';
+
+import { Auth } from '@/components/auth';
+
+import { LoginForm } from '@/modules/auth/login';
 
 export const Route = createFileRoute('/auth/login')({
-  component: LoginComp,
-})
+  component: LoginPage,
+});
 
-function LoginComp() {
-  return <Login />
+function LoginPage() {
+  return (
+    <Auth>
+      <LoginForm />
+    </Auth>
+  );
 }

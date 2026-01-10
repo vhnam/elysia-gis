@@ -1,56 +1,18 @@
-import type { FormEvent, ReactNode } from 'react'
+import { GalleryVerticalEndIcon } from 'lucide-react';
+import type { PropsWithChildren } from 'react';
 
-export interface AuthProps {
-  actionText: string
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void
-  status: 'pending' | 'idle' | 'success' | 'error'
-  afterSubmit?: ReactNode
-}
-
-export function Auth({ actionText, onSubmit, status, afterSubmit }: AuthProps) {
+export const Auth = ({ children }: PropsWithChildren) => {
   return (
-    <div className="fixed inset-0 bg-white dark:bg-black flex items-start justify-center p-8">
-      <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">{actionText}</h1>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            onSubmit(e)
-          }}
-          className="space-y-4"
-        >
-          <div>
-            <label htmlFor="email" className="block text-xs">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="px-2 py-1 w-full rounded-sm border border-gray-500/20 bg-white dark:bg-gray-800"
-            />
+    <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+      <div className="flex w-full max-w-sm flex-col gap-6">
+        <a href="#" className="flex items-center gap-2 self-center font-medium">
+          <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+            <GalleryVerticalEndIcon className="size-4" />
           </div>
-          <div>
-            <label htmlFor="password" className="block text-xs">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="px-2 py-1 w-full rounded-sm border border-gray-500/20 bg-white dark:bg-gray-800"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-cyan-600 text-white rounded-sm py-2 font-black uppercase"
-            disabled={status === 'pending'}
-          >
-            {status === 'pending' ? '...' : actionText}
-          </button>
-          {afterSubmit ? afterSubmit : null}
-        </form>
+          Elysia GIS
+        </a>
+        {children}
       </div>
     </div>
-  )
-}
+  );
+};

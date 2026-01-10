@@ -1,10 +1,11 @@
-import { Elysia } from 'elysia';
 import { openapi } from '@elysiajs/openapi';
+import { Elysia } from 'elysia';
 
-import { env } from './config/env';
-import { corsMiddleware, errorHandler } from './middleware';
-import { auth } from './modules/auth';
-import { user } from './modules/user';
+import { env } from '@/config/env';
+import { corsMiddleware, errorHandler } from '@/middleware';
+import { auth } from '@/modules/auth';
+import { health } from '@/modules/health';
+import { user } from '@/modules/user';
 
 const app = new Elysia()
   // 1.  Middlewares
@@ -13,17 +14,12 @@ const app = new Elysia()
 
   .use(openapi())
 
-  // 3. Health check endpoint (no auth required)
-  .get('/health', () => ({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-  }))
-
-  // 4. Module routes (versioned API)
+  // 2. Modules
+  .use(health)
   .use(auth)
   .use(user)
 
-  // 5. Catch-all 404
+  // 3. Catch-all 404
   .all('*', ({ set }) => {
     set.status = 404;
     return {

@@ -1,6 +1,6 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import { cn } from '@/utils/ui'
+import { cn } from '@/utils/ui';
 
 function Label({ className, ...props }: React.ComponentProps<'label'>) {
   return (
@@ -12,7 +12,7 @@ function Label({ className, ...props }: React.ComponentProps<'label'>) {
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Label }
+export { Label };
