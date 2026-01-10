@@ -1,9 +1,9 @@
 import { eq, like, sql } from 'drizzle-orm';
 
 import db from '@/config/db';
-import { table } from '@/database';
 
 import { UserModel } from './user.model';
+import { tableUsers } from './user.table';
 
 export abstract class UserService {
   static async getAllUsers({
@@ -13,19 +13,19 @@ export abstract class UserService {
   }: UserModel.GetUsersRequest): Promise<UserModel.GetUsersResponse> {
     const users = await db
       .select({
-        id: table.users.id,
-        username: table.users.username,
-        email: table.users.email,
-        createdAt: table.users.createdAt,
+        id: tableUsers.id,
+        username: tableUsers.username,
+        email: tableUsers.email,
+        createdAt: tableUsers.createdAt,
       })
-      .from(table.users)
+      .from(tableUsers)
       .limit(limit)
       .offset((page - 1) * limit)
-      .where(search ? like(table.users.username, `%${search}%`) : undefined);
+      .where(search ? like(tableUsers.username, `%${search}%`) : undefined);
 
     const countResult = await db
       .select({ count: sql<number>`count(*)::int` })
-      .from(table.users);
+      .from(tableUsers);
 
     const total = countResult[0]?.count || 0;
 
@@ -38,42 +38,67 @@ export abstract class UserService {
     };
   }
 
-  static async createUser(data: {
-    username: string;
-    email: string;
-    password: string;
-  }) {
+  static async getUserById(
+    userId: string,
+  ): Promise<UserModel.UserResponse | null> {
+    const users = await db
+      .select({
+        id: tableUsers.id,
+        username: tableUsers.username,
+        email: tableUsers.email,
+        createdAt: tableUsers.createdAt,
+      })
+      .from(tableUsers)
+      .where(eq(tableUsers.id, userId))
+      .limit(1);
+
+    return users[0] || null;
+  }
+
+  static async createUser(
+    data: UserModel.CreateUserRequest,
+  ): Promise<UserModel.UserResponse> {
     const hashedPassword = await Bun.password.hash(data.password);
 
     const [newUser] = await db
-      .insert(table.users)
+      .insert(tableUsers)
       .values({
         username: data.username,
         email: data.email,
         password: hashedPassword,
       })
       .returning({
-        id: table.users.id,
-        username: table.users.username,
-        email: table.users.email,
-        createdAt: table.users.createdAt,
+        id: tableUsers.id,
+        username: tableUsers.username,
+        email: tableUsers.email,
+        createdAt: tableUsers.createdAt,
       });
 
     return newUser;
   }
 
-  static async getUserById(userId: string) {
-    const users = await db
-      .select({
-        id: table.users.id,
-        username: table.users.username,
-        email: table.users.email,
-        createdAt: table.users.createdAt,
-      })
-      .from(table.users)
-      .where(eq(table.users.id, userId))
-      .limit(1);
+  static async updateUser(
+    userId: string,
+    data: UserModel.UpdateUserRequest,
+  ): Promise<UserModel.UserResponse> {
+    const hashedPassword = data.password
+      ? await Bun.password.hash(data.password)
+      : undefined;
 
-    return users[0] || null;
+    const [updatedUser] = await db
+      .update(tableUsers)
+      .set({
+        ...(hashedPassword && { password: hashedPassword }),
+        email: data.email,
+      })
+      .where(eq(tableUsers.id, userId))
+      .returning({
+        id: tableUsers.id,
+        username: tableUsers.username,
+        email: tableUsers.email,
+        createdAt: tableUsers.createdAt,
+      });
+
+    return updatedUser;
   }
 }

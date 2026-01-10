@@ -1,28 +1,27 @@
+import { openapi } from '@elysiajs/openapi';
 import { Elysia } from 'elysia';
 
-import { env } from './config/env';
-import { corsMiddleware, errorHandler } from './middleware';
-import { auth } from './modules/auth';
-import { user } from './modules/user';
+import { env } from '@/config/env';
+
+import { authController } from '@/modules/auth';
+import { healthController } from '@/modules/health';
+import { userController } from '@/modules/user';
+
+import { corsMiddleware, errorHandler } from '@/middleware';
 
 const app = new Elysia()
-  // 1. CORS middleware (must be first for preflight requests)
+  // 1.  Middlewares
   .use(corsMiddleware)
-
-  // 2. Error handler (global)
   .use(errorHandler)
 
-  // 3. Health check endpoint (no auth required)
-  .get('/health', () => ({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-  }))
+  .use(openapi())
 
-  // 4. Module routes (versioned API)
-  .use(auth)
-  .use(user)
+  // 2. Modules
+  .use(healthController)
+  .use(authController)
+  .use(userController)
 
-  // 5. Catch-all 404
+  // 3. Catch-all 404
   .all('*', ({ set }) => {
     set.status = 404;
     return {
@@ -32,8 +31,10 @@ const app = new Elysia()
       statusCode: 404,
     };
   })
+  .listen({
+    port: env.API_PORT,
+    hostname: '0.0.0.0',
+  });
 
-  .listen(env.API_PORT);
-
-console.log(`Server running at http://localhost:${env.API_PORT}`);
+console.log(`Server running at http://0.0.0.0:${env.API_PORT}`);
 console.log(`API available at http://localhost:${env.API_PORT}/api/v1`);
