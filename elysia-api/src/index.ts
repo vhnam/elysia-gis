@@ -31,7 +31,6 @@ const app = new Elysia()
       statusCode: 404,
     };
   })
-
   .listen({
     port: env.API_PORT,
     hostname: '0.0.0.0',

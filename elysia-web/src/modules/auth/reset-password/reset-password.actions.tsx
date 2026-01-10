@@ -1,8 +1,8 @@
 import { useForm } from '@tanstack/react-form';
 import { useRouter, useSearch } from '@tanstack/react-router';
-import { AxiosError } from 'axios';
 import { startTransition } from 'react';
 import { toast } from 'sonner';
+import type { AxiosError } from 'axios';
 
 import { resetPasswordSchema } from '@/schemas/auth.schema';
 

@@ -1,17 +1,18 @@
 import { createId } from '@paralleldrive/cuid2';
+import { render } from '@react-email/render';
 import { and, eq, gte, isNull } from 'drizzle-orm';
-import { env, status } from 'elysia';
+import { status } from 'elysia';
 import React from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 
 import db from '@/config/db';
+import { env } from '@/config/env';
 
 import { transporter } from '@/utils/email';
 import logger from '@/utils/logger';
 
-import { UserService, tableUsers } from '@/modules/user';
-
 import ResetPasswordEmail from '@/emails/reset-password';
+
+import { UserService, tableUsers } from '@/modules/user';
 
 import type { AuthModel } from './auth.model';
 import { tableResetPasswordTokens } from './auth.table';
@@ -112,13 +113,9 @@ export abstract class Auth {
         'Reset password token created successfully',
       );
 
-      // const html = await renderToStaticMarkup(
-      //   <ResetPasswordEmail token={token} />,
-      // );
+      logger.info(JSON.stringify(env));
 
-      const html = `
-        <p>Click <a href="${env.FRONTEND_URL}/auth/reset-password?token=${token}">here</a> to reset your password.</p>
-      `;
+      const html = await render(<ResetPasswordEmail token={token} />);
 
       try {
         await transporter.sendMail({

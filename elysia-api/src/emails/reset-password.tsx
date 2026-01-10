@@ -8,6 +8,8 @@ interface ResetPasswordEmailProps {
 }
 
 const ResetPasswordEmail = ({ token }: ResetPasswordEmailProps) => {
+  const resetPasswordUrl = `${env.FRONTEND_URL}/auth/reset-password?token=${token}`;
+
   return (
     <Tailwind>
       <Section className="flex justify-center items-center w-full min-h-screen font-sans">
@@ -21,7 +23,7 @@ const ResetPasswordEmail = ({ token }: ResetPasswordEmailProps) => {
           </Text>
           <Button
             className="box-border w-full rounded-[8px] bg-indigo-600 px-[12px] py-[12px] text-center font-semibold text-white"
-            href={`${env.FRONTEND_URL}/auth/reset-password?token=${token}`}
+            href={resetPasswordUrl}
           >
             Reset Password
           </Button>
@@ -29,11 +31,8 @@ const ResetPasswordEmail = ({ token }: ResetPasswordEmailProps) => {
             If that does not work, copy and paste the following link into your
             browser:
           </Text>
-          <Link
-            className="text-xs"
-            href={`${env.FRONTEND_URL}/auth/reset-password?token=${token}`}
-          >
-            {`${env.FRONTEND_URL}/auth/reset-password?token=${token}`}
+          <Link className="text-xs" href={resetPasswordUrl}>
+            {resetPasswordUrl}
           </Link>
           <Text className="text-gray-500">Thank you for your attention.</Text>
           <Text className="text-indigo-400 text-sx font-semibold">

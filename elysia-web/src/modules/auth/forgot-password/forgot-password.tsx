@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
 
+import { useForgotPassword } from './forgot-password.actions';
 import { cn } from '@/utils/ui';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -20,7 +21,6 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
-import { useForgotPassword } from './forgot-password.actions';
 
 export const ForgotPasswordForm = () => {
   const { form, isSuccess } = useForgotPassword();

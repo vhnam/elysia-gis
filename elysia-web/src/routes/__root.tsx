@@ -1,6 +1,6 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router';
-import type { PropsWithChildren } from 'react';
 import { Toaster } from 'sonner';
+import type { PropsWithChildren } from 'react';
 
 import appCss from '@/styles.css?url';
 
