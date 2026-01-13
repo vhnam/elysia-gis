@@ -85,6 +85,7 @@ const response = await api.post('/auth/sign-in', {
 ```tsx
 // src/queries/users/user.queries.ts
 import { useQuery } from '@tanstack/react-query';
+
 import { api } from '@/utils/api';
 
 export const useUser = (userId: string) => {
@@ -165,4 +166,3 @@ const query = useQuery({
   cacheTime: 10 * 60 * 1000, // 10 minutes
 });
 ```
-

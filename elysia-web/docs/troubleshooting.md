@@ -9,6 +9,7 @@
 **Solutions:**
 
 1. Change the port in `vite.config.ts`:
+
    ```typescript
    server: {
      port: 3001,
@@ -36,12 +37,14 @@
 **Solutions:**
 
 1. Clear node_modules and reinstall:
+
    ```bash
    rm -rf node_modules pnpm-lock.yaml
    pnpm install
    ```
 
 2. Check for TypeScript errors:
+
    ```bash
    pnpm build
    ```
@@ -150,6 +153,7 @@
 **Solutions:**
 
 1. Run TypeScript compiler:
+
    ```bash
    pnpm tsc --noEmit
    ```
@@ -165,4 +169,3 @@
 3. Review [Getting Started](./getting-started.md) guide
 4. Verify all dependencies are installed correctly
 5. Check that Node.js version is compatible (18+)
-

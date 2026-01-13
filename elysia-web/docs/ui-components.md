@@ -67,9 +67,9 @@ You can customize styles by:
 Icons are provided by [Lucide React](https://lucide.dev):
 
 ```tsx
-import { User, Lock, Mail } from 'lucide-react';
+import { Lock, Mail, User } from 'lucide-react';
 
-<User className="w-4 h-4" />
+<User className="w-4 h-4" />;
 ```
 
 ## Toast Notifications
@@ -84,7 +84,7 @@ toast.error('Error message');
 toast.info('Info message');
 ```
 
-The `<Toaster /> component is included in the root layout (`src/routes/__root.tsx`).
+The `<Toaster /> component is included in the root layout (`src/routes/\_\_root.tsx`).
 
 ## Form Components
 
@@ -92,9 +92,10 @@ Forms use [TanStack Form](https://tanstack.com/form) for type-safe form handling
 
 ```tsx
 import { useForm } from '@tanstack/react-form';
+
+import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 
 function MyForm() {
   const form = useForm({
@@ -107,7 +108,12 @@ function MyForm() {
   });
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
+    >
       <form.Field name="email">
         {(field) => (
           <Field label="Email" error={field.state.meta.errors[0]}>
@@ -124,4 +130,3 @@ function MyForm() {
   );
 }
 ```
-

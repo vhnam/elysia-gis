@@ -15,6 +15,7 @@ Users can sign in with their username and password. Upon successful authenticati
 - User is redirected to the home page
 
 **Implementation:**
+
 - Component: `src/modules/auth/login/login.tsx`
 - Mutation: `useLoginMutation` from `src/queries/auth/auth.mutation.ts`
 
@@ -25,6 +26,7 @@ Users can sign in with their username and password. Upon successful authenticati
 Users can request a password reset by providing their email address. An email with a reset token will be sent.
 
 **Implementation:**
+
 - Component: `src/modules/auth/forgot-password/forgot-password.tsx`
 - Mutation: `useForgotPasswordMutation`
 
@@ -35,6 +37,7 @@ Users can request a password reset by providing their email address. An email wi
 Users can reset their password using the token received via email.
 
 **Implementation:**
+
 - Component: `src/modules/auth/reset-password/reset-password.tsx`
 - Mutation: `useResetPasswordMutation`
 
@@ -92,13 +95,13 @@ import { useNavigate } from '@tanstack/react-router';
 
 function LogoutButton() {
   const navigate = useNavigate();
-  
+
   const handleLogout = async () => {
     // Clear session (cookie is handled by API)
     // Or call logout endpoint if available
     navigate({ to: '/auth/login' });
   };
-  
+
   return <button onClick={handleLogout}>Logout</button>;
 }
 ```
@@ -110,4 +113,3 @@ Authentication forms use Zod schemas for validation:
 - `src/schemas/auth.schema.ts` - Validation schemas for auth forms
 
 Forms are built with TanStack Form for type-safe form handling.
-

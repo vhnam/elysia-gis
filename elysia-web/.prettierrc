@@ -1,4 +1,6 @@
 {
+  "tabWidth": 2,
+  "useTabs": false,
   "semi": true,
   "singleQuote": true,
   "trailingComma": "all",
@@ -11,7 +13,8 @@
     "^@/components/(.*)$",
     "^@/modules/(.*)$",
     "^@/(.*)$",
-    "^[./]"
+    "^[./]",
+    "^[^./].*\\.css$"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,

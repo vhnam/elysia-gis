@@ -5,7 +5,7 @@
 The API endpoint is configured in `src/utils/api.ts`. By default, it points to:
 
 ```typescript
-baseURL: 'http://localhost:4000/api/v1'
+baseURL: 'http://localhost:4000/api/v1';
 ```
 
 ### Changing the API Endpoint
@@ -74,4 +74,3 @@ The built files will be in the `dist/` directory, ready to be served by any stat
 If you're running the API on a different origin, ensure CORS is properly configured on the API server to allow requests from your frontend URL.
 
 See the [API documentation](../elysia-api/docs/development.md) for CORS configuration.
-

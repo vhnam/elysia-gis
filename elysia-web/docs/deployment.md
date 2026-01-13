@@ -56,6 +56,7 @@ netlify deploy --prod --dir=dist
 ### Other Static Hosts
 
 The `dist/` directory can be deployed to:
+
 - AWS S3 + CloudFront
 - GitHub Pages
 - Cloudflare Pages
@@ -88,7 +89,7 @@ web:
     context: ./elysia-web
     dockerfile: Dockerfile
   ports:
-    - "3000:3000"
+    - '3000:3000'
   environment:
     VITE_API_URL: http://api:4000/api/v1
 ```
@@ -145,4 +146,3 @@ Consider setting up:
 - Review and configure Content Security Policy (CSP) headers
 - Validate all API responses
 - Never expose sensitive API keys in client code
-

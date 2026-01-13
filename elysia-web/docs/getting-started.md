@@ -76,4 +76,3 @@ pnpm test             # Run tests
 - [Learn about routing](./routing.md)
 - [Understand authentication](./authentication.md)
 - [Explore UI components](./ui-components.md)
-

@@ -103,7 +103,7 @@ The generated route tree is in `src/routeTree.gen.ts`.
 ```tsx
 import { Link } from '@tanstack/react-router';
 
-<Link to="/auth/login">Login</Link>
+<Link to="/auth/login">Login</Link>;
 ```
 
 ### Programmatic Navigation
@@ -113,11 +113,11 @@ import { useNavigate } from '@tanstack/react-router';
 
 function MyComponent() {
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
     navigate({ to: '/auth/login' });
   };
-  
+
   return <button onClick={handleClick}>Go to Login</button>;
 }
 ```
@@ -134,4 +134,3 @@ function MyComponent() {
 ```
 
 Context is set up in `src/router.tsx` and includes the TanStack Query client.
-
