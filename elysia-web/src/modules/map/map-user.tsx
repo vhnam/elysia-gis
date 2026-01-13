@@ -35,14 +35,18 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
 
   return (
     <Tooltip>
-      <TooltipTrigger>
-        <Avatar size="lg" className="cursor-pointer">
-          {user.imageUrl && <AvatarImage src={user.imageUrl} alt={fullName} />}
-          <AvatarFallback className="bg-primary text-primary-foreground">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
-      </TooltipTrigger>
+      <TooltipTrigger
+        render={
+          <Avatar size="lg" className="cursor-pointer">
+            {user.imageUrl && (
+              <AvatarImage src={user.imageUrl} alt={fullName} />
+            )}
+            <AvatarFallback className="bg-primary text-primary-foreground">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+        }
+      />
       <TooltipContent>
         <p>
           {fullName}

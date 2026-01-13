@@ -18,7 +18,14 @@ export const authController = new Elysia({
       const result = await Auth.signIn(body);
 
       // If authentication fails, return error response
-      if (!result || !result.username || !result.id) {
+      if (
+        !result ||
+        !result.username ||
+        !result.id ||
+        typeof result.email !== 'string' ||
+        typeof result.firstName !== 'string' ||
+        typeof result.lastName !== 'string'
+      ) {
         return 'Invalid username or password';
       }
 
