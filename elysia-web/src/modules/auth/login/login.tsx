@@ -1,4 +1,3 @@
-import { useLogin } from './login.actions';
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,9 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import PasswordInput from '@/components/ui/password-input';
 
+import { useLogin } from './login.actions';
 
 export const LoginForm = () => {
   const { form } = useLogin();
@@ -67,13 +68,12 @@ export const LoginForm = () => {
                         Forgot your password?
                       </a>
                     </div>
-                    <Input
+                    <PasswordInput
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      type="password"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />

@@ -10,11 +10,9 @@ type ResetPasswordSearch = {
 
 export const Route = createFileRoute('/auth/reset-password')({
   component: ResetPasswordPage,
-  validateSearch: (search: Record<string, unknown>): ResetPasswordSearch => {
-    return {
-      token: (search.token as string) || '',
-    };
-  },
+  validateSearch: (search: Record<string, unknown>): ResetPasswordSearch => ({
+    token: (search.token as string) || '',
+  }),
 });
 
 function ResetPasswordPage() {

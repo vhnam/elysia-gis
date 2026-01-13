@@ -4,8 +4,11 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
+  id: string;
   username: string;
-  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
   token: string;
 }
 

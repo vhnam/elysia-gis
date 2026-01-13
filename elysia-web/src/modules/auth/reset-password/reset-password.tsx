@@ -1,4 +1,3 @@
-import { useResetPassword } from './reset-password.actions';
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -16,8 +15,9 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import PasswordInput from '@/components/ui/password-input';
 
+import { useResetPassword } from './reset-password.actions';
 
 export const ResetPasswordForm = () => {
   const { form } = useResetPassword();
@@ -43,13 +43,12 @@ export const ResetPasswordForm = () => {
                 {(field) => (
                   <Field>
                     <FieldLabel htmlFor={field.name}>New Password</FieldLabel>
-                    <Input
+                    <PasswordInput
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      type="password"
                       placeholder="Enter your new password"
                       required
                     />
@@ -63,13 +62,12 @@ export const ResetPasswordForm = () => {
                     <FieldLabel htmlFor={field.name}>
                       Confirm Password
                     </FieldLabel>
-                    <Input
+                    <PasswordInput
                       id={field.name}
                       name={field.name}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      type="password"
                       placeholder="Confirm your new password"
                       required
                     />

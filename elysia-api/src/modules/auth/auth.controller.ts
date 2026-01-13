@@ -18,14 +18,14 @@ export const authController = new Elysia({
       const result = await Auth.signIn(body);
 
       // If authentication fails, return error response
-      if (!result || !result.username || !result.userId) {
+      if (!result || !result.username || !result.id) {
         return 'Invalid username or password';
       }
 
-      const { username, userId } = result;
+      const { username, id, firstName, lastName, email } = result;
 
       // Generate JWT token
-      const token = await jwt.sign({ userId, username });
+      const token = await jwt.sign({ userId: id, username });
 
       // Set session cookie
       session.value = token;
@@ -33,8 +33,11 @@ export const authController = new Elysia({
       session.secure = env.NODE_ENV === 'production';
 
       return {
+        id,
         username,
-        userId,
+        firstName,
+        lastName,
+        email,
         token,
       };
     },

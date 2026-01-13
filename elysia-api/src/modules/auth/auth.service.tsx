@@ -50,7 +50,10 @@ export abstract class Auth {
     // Return user info (JWT will be generated in the route handler using @elysiajs/jwt)
     return {
       username: user.username,
-      userId: user.id,
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
     };
   }
 

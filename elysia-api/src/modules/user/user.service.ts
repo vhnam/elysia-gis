@@ -15,8 +15,11 @@ export abstract class UserService {
       .select({
         id: tableUsers.id,
         username: tableUsers.username,
+        firstName: tableUsers.firstName,
+        lastName: tableUsers.lastName,
         email: tableUsers.email,
         createdAt: tableUsers.createdAt,
+        updatedAt: tableUsers.updatedAt,
       })
       .from(tableUsers)
       .limit(limit)
@@ -45,8 +48,11 @@ export abstract class UserService {
       .select({
         id: tableUsers.id,
         username: tableUsers.username,
+        firstName: tableUsers.firstName,
+        lastName: tableUsers.lastName,
         email: tableUsers.email,
         createdAt: tableUsers.createdAt,
+        updatedAt: tableUsers.updatedAt,
       })
       .from(tableUsers)
       .where(eq(tableUsers.id, userId))
@@ -64,14 +70,19 @@ export abstract class UserService {
       .insert(tableUsers)
       .values({
         username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: hashedPassword,
       })
       .returning({
         id: tableUsers.id,
         username: tableUsers.username,
+        firstName: tableUsers.firstName,
+        lastName: tableUsers.lastName,
         email: tableUsers.email,
         createdAt: tableUsers.createdAt,
+        updatedAt: tableUsers.updatedAt,
       });
 
     return newUser;
@@ -85,18 +96,26 @@ export abstract class UserService {
       ? await Bun.password.hash(data.password)
       : undefined;
 
+    const updateData = {
+      ...(hashedPassword && { password: hashedPassword }),
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      updatedAt: new Date(),
+    };
+
     const [updatedUser] = await db
       .update(tableUsers)
-      .set({
-        ...(hashedPassword && { password: hashedPassword }),
-        email: data.email,
-      })
+      .set(updateData)
       .where(eq(tableUsers.id, userId))
       .returning({
         id: tableUsers.id,
         username: tableUsers.username,
+        firstName: tableUsers.firstName,
+        lastName: tableUsers.lastName,
         email: tableUsers.email,
         createdAt: tableUsers.createdAt,
+        updatedAt: tableUsers.updatedAt,
       });
 
     return updatedUser;

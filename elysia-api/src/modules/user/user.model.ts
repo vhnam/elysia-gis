@@ -16,14 +16,18 @@ export namespace UserModel {
   });
 
   export const createUserRequest = t.Object({
-    username: t.String({ minLength: 3 }),
-    email: t.String({ format: 'email' }),
+    username: t.String({ minLength: 3, maxLength: 255 }),
+    firstName: t.String({ minLength: 3, maxLength: 255 }),
+    lastName: t.String({ minLength: 3, maxLength: 255 }),
+    email: t.String({ format: 'email', maxLength: 255 }),
     password: t.String(),
   });
 
   export const updateUserRequest = t.Object({
-    email: t.Optional(t.String({ format: 'email' })),
-    password: t.Optional(t.String()),
+    email: t.Optional(t.String({ format: 'email', maxLength: 255 })),
+    firstName: t.Optional(t.String({ minLength: 3, maxLength: 255 })),
+    lastName: t.Optional(t.String({ minLength: 3, maxLength: 255 })),
+    password: t.Optional(t.String({ minLength: 8, maxLength: 255 })),
   });
 
   /**
@@ -33,8 +37,11 @@ export namespace UserModel {
   export const userResponse = t.Object({
     id: t.String(),
     username: t.String(),
+    firstName: t.String(),
+    lastName: t.String(),
     email: t.String({ format: 'email' }),
     createdAt: t.Date(),
+    updatedAt: t.Date(),
   });
 
   export const getUsersResponse = t.Object({

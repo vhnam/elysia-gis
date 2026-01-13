@@ -7,9 +7,12 @@ export namespace AuthModel {
   });
 
   export const signInResponse = t.Object({
-    username: t.String(),
-    userId: t.String(),
+    email: t.String({ format: 'email' }),
+    id: t.String(),
+    firstName: t.String(),
+    lastName: t.String(),
     token: t.String(),
+    username: t.String(),
   });
 
   export const signInInvalid = t.Literal('Invalid username or password');
