@@ -15,7 +15,7 @@ export const useLogin = () => {
 
   const form = useForm({
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
     validators: {
@@ -25,11 +25,13 @@ export const useLogin = () => {
       const response = await loginMutation.mutateAsync(value);
       setToken(response.token);
       setUser({
-        id: response.id,
-        firstName: response.firstName,
-        lastName: response.lastName,
-        email: response.email,
-        username: response.username,
+        id: response.user.id,
+        name: response.user.name,
+        email: response.user.email,
+        emailVerified: response.user.emailVerified,
+        image: response.user.image,
+        createdAt: response.user.createdAt,
+        updatedAt: response.user.updatedAt,
       });
 
       startTransition(() => {

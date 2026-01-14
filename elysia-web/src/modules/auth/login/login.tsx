@@ -1,4 +1,3 @@
-import { useLogin } from './login.actions';
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import PasswordInput from '@/components/ui/password-input';
 
+import { useLogin } from './login.actions';
 
 export const LoginForm = () => {
   const { form } = useLogin();
@@ -38,10 +38,10 @@ export const LoginForm = () => {
             }}
           >
             <FieldGroup>
-              <form.Field name="username">
+              <form.Field name="email">
                 {(field) => (
                   <Field>
-                    <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -49,7 +49,7 @@ export const LoginForm = () => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       type="text"
-                      placeholder="Enter your username"
+                      placeholder="Enter your email"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />

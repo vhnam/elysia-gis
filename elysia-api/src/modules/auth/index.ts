@@ -1,8 +1,8 @@
 export {
-  sessionSchema,
-  accountSchema,
-  verificationSchema,
-  userRelationsSchema,
-  sessionRelationsSchema,
   accountRelationsSchema,
+  accountSchema,
+  sessionRelationsSchema,
+  sessionSchema,
+  userRelationsSchema,
+  verificationSchema,
 } from './auth.schema';

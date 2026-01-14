@@ -1,6 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { openAPI } from 'better-auth/plugins';
+import { bearer, jwt, openAPI } from 'better-auth/plugins';
 
 import { db } from '@/config/db';
 import { env } from '@/config/env';
@@ -25,7 +25,7 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
-  plugins: [openAPI()],
+  plugins: [bearer(), jwt(), openAPI()],
   emailAndPassword: {
     enabled: true,
     disableSignUp: true,
@@ -36,5 +36,8 @@ export const auth = betterAuth({
     revokeSessionsOnEmailVerification: true,
     revokeSessionsOnSignUp: true,
     revokeSessionsOnSignIn: true,
+  },
+  advanced: {
+    disableOriginCheck: env.NODE_ENV === 'development' ? true : false,
   },
 });

@@ -23,8 +23,11 @@ import {
 
 import type { User } from '@/models';
 
-const getInitials = (user: User): string => {
-  return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+const getAvatarPlaceholder = (user: User): string => {
+  return `${user.name
+    .split(' ')
+    .map((word: string) => word.charAt(0))
+    .join('')}`.toUpperCase();
 };
 
 interface UserAvatarProps {
@@ -32,26 +35,26 @@ interface UserAvatarProps {
 }
 
 const UserAvatar = ({ user }: UserAvatarProps) => {
-  const initials = getInitials(user);
-  const fullName = `${user.firstName} ${user.lastName}`;
+  const avatarPlaceholder = getAvatarPlaceholder(user);
 
   return (
     <Tooltip>
       <TooltipTrigger
         render={
-          <Avatar size="lg" className="cursor-pointer">
-            {user.imageUrl && (
-              <AvatarImage src={user.imageUrl} alt={fullName} />
-            )}
+          <Avatar
+            size="lg"
+            className="cursor-pointer border-2 border-primary border-dashed"
+          >
+            {user.image && <AvatarImage src={user.image} alt={user.name} />}
             <AvatarFallback className="bg-primary text-primary-foreground">
-              {initials}
+              {avatarPlaceholder}
             </AvatarFallback>
           </Avatar>
         }
       />
       <TooltipContent>
         <p>
-          {fullName}
+          {user.name}
           <br />
           {user.email}
         </p>
