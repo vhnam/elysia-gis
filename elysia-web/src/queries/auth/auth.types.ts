@@ -28,3 +28,8 @@ export interface ResetPasswordRequest {
 export interface ResetPasswordResponse {
   message: string;
 }
+
+export interface AccountInfoResponse {
+  user: User;
+  data: Record<string, unknown>;
+}

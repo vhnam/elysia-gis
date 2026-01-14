@@ -1,8 +1,8 @@
 import { useForm } from '@tanstack/react-form';
 import { useRouter, useSearch } from '@tanstack/react-router';
+import type { AxiosError } from 'axios';
 import { startTransition } from 'react';
 import { toast } from 'sonner';
-import type { AxiosError } from 'axios';
 
 import { resetPasswordSchema } from '@/schemas/auth.schema';
 
@@ -27,7 +27,7 @@ export const useResetPassword = () => {
       try {
         await resetPasswordMutation.mutateAsync(value);
         startTransition(() => {
-          router.navigate({ to: '/auth/login' });
+          router.navigate({ to: '/auth/sign-in' });
         });
         toast.success('Password reset successfully');
       } catch (error) {

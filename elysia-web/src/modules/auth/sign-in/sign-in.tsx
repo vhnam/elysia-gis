@@ -18,10 +18,10 @@ import {
 import { Input } from '@/components/ui/input';
 import PasswordInput from '@/components/ui/password-input';
 
-import { useLogin } from './login.actions';
+import { useSignInActions } from './sign-in.actions';
 
-export const LoginForm = () => {
-  const { form } = useLogin();
+export const SignInForm = () => {
+  const { form } = useSignInActions();
 
   return (
     <div className={cn('flex flex-col gap-6')}>
@@ -82,7 +82,7 @@ export const LoginForm = () => {
               </form.Field>
               <Field>
                 <Button type="submit" disabled={form.state.isSubmitting}>
-                  {form.state.isSubmitting ? 'Logging in...' : 'Login'}
+                  {form.state.isSubmitting ? 'Signing in...' : 'Sign In'}
                 </Button>
               </Field>
             </FieldGroup>

@@ -1,6 +1,5 @@
 import { IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { Link, useRouter } from '@tanstack/react-router';
-import { startTransition } from 'react';
 
 import useAuthStore from '@/stores/auth';
 
@@ -23,6 +22,8 @@ import {
 
 import type { User } from '@/models';
 
+import { useMapActions } from './map.actions';
+
 const getAvatarPlaceholder = (user: User): string => {
   return `${user.name
     .split(' ')
@@ -31,6 +32,10 @@ const getAvatarPlaceholder = (user: User): string => {
 };
 
 interface UserAvatarProps {
+  user: User;
+}
+
+interface UserMenuProps {
   user: User;
 }
 
@@ -43,7 +48,7 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
         render={
           <Avatar
             size="lg"
-            className="cursor-pointer border-2 border-primary border-dashed"
+            className="cursor-pointer border-2 border-primary border-solid"
           >
             {user.image && <AvatarImage src={user.image} alt={user.name} />}
             <AvatarFallback className="bg-primary text-primary-foreground">
@@ -63,26 +68,12 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
   );
 };
 
-interface UserMenuProps {
-  user: User;
-}
-
 const UserMenu = ({ user }: UserMenuProps) => {
   const router = useRouter();
-  const { setToken, setUser } = useAuthStore();
-
-  const handleLogout = () => {
-    setToken(null);
-    setUser(null);
-
-    startTransition(() => {
-      router.navigate({ to: '/auth/login' });
-    });
-  };
+  const { onSignOut } = useMapActions();
 
   const handleProfile = () => {
-    // TODO: Navigate to profile page when implemented
-    console.log('Navigate to profile');
+    router.navigate({ to: '/profile' });
   };
 
   return (
@@ -98,7 +89,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
             <IconUserCircle />
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout} variant="destructive">
+          <DropdownMenuItem onClick={onSignOut} variant="destructive">
             <IconLogout />
             Logout
           </DropdownMenuItem>
@@ -108,10 +99,10 @@ const UserMenu = ({ user }: UserMenuProps) => {
   );
 };
 
-const LoginButton = () => {
+const SignInButton = () => {
   return (
-    <Link to="/auth/login">
-      <Button variant="default">Login</Button>
+    <Link to="/auth/sign-in">
+      <Button variant="default">Sign In</Button>
     </Link>
   );
 };
@@ -121,7 +112,7 @@ export const MapUser = () => {
 
   return (
     <div className="absolute top-4 right-4 z-50">
-      {user ? <UserMenu user={user} /> : <LoginButton />}
+      {user ? <UserMenu user={user} /> : <SignInButton />}
     </div>
   );
 };

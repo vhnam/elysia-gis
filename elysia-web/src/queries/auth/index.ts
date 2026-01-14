@@ -1,5 +1,6 @@
 export {
   useForgotPasswordMutation,
-  useLoginMutation,
   useResetPasswordMutation,
+  useSignInMutation,
+  useSignOutMutation,
 } from './auth.mutation';

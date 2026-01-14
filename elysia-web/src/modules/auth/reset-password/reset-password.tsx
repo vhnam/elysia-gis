@@ -1,4 +1,5 @@
-import { useResetPassword } from './reset-password.actions';
+import { Link } from '@tanstack/react-router';
+
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ import {
 } from '@/components/ui/field';
 import PasswordInput from '@/components/ui/password-input';
 
+import { useResetPassword } from './reset-password.actions';
 
 export const ResetPasswordForm = () => {
   const { form } = useResetPassword();
@@ -88,7 +90,7 @@ export const ResetPasswordForm = () => {
       <FieldDescription className="px-6 text-center">
         Remember your password?
         <br />
-        <a href="/auth/login">Login</a>
+        <Link to="/auth/sign-in">SignIn</Link>
       </FieldDescription>
     </div>
   );
