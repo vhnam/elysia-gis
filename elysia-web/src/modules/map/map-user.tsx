@@ -2,6 +2,8 @@ import { IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { Link, useRouter } from '@tanstack/react-router';
 import { startTransition } from 'react';
 
+import useAuthStore from '@/stores/auth';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +21,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import useAuthStore, { User } from '@/stores/auth';
+import type { User } from '@/models';
 
 const getInitials = (user: User): string => {
   return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();

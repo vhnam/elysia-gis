@@ -3,22 +3,27 @@ import { Elysia } from 'elysia';
 
 import { env } from '@/config/env';
 
-import { authController } from '@/modules/auth';
+import { openapiHandler } from '@/utils/openapi';
+
 import { healthController } from '@/modules/health';
 import { userController } from '@/modules/user';
 
-import { corsMiddleware, errorHandler } from '@/middleware';
+import { authMiddleware, corsMiddleware, errorHandler } from '@/middleware';
+
+// Merge Better Auth OpenAPI schema with Elysia's OpenAPI
 
 const app = new Elysia()
+
   // 1.  Middlewares
+  .use(authMiddleware)
   .use(corsMiddleware)
+
   .use(errorHandler)
 
-  .use(openapi())
+  .use(openapiHandler)
 
   // 2. Modules
   .use(healthController)
-  .use(authController)
   .use(userController)
 
   // 3. Catch-all 404

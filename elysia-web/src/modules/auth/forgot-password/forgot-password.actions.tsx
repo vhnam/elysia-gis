@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form';
-import type { AxiosError } from 'axios';
 import { startTransition, useState } from 'react';
 import { toast } from 'sonner';
+import type { AxiosError } from 'axios';
 
 import { forgotPasswordSchema } from '@/schemas/auth.schema';
 

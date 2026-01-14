@@ -1,3 +1,4 @@
+import { useLogin } from './login.actions';
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,6 @@ import {
 import { Input } from '@/components/ui/input';
 import PasswordInput from '@/components/ui/password-input';
 
-import { useLogin } from './login.actions';
 
 export const LoginForm = () => {
   const { form } = useLogin();

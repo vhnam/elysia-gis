@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { type User } from '@/models';
+import type { User } from '@/models';
 
 type AuthState = {
   token: string | null;

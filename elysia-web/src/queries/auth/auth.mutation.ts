@@ -1,8 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import type { UseMutationOptions } from '@tanstack/react-query';
 
-import { api } from '@/utils/api';
-
 import type {
   ForgotPasswordRequest,
   ForgotPasswordResponse,
@@ -11,6 +9,8 @@ import type {
   SignInRequest,
   SignInResponse,
 } from './auth.types';
+import { api } from '@/utils/api';
+
 
 export const useLoginMutation = (
   options?: UseMutationOptions<SignInResponse, Error, SignInRequest>,

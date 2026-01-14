@@ -1,13 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import postgres from 'postgres';
 
-import { env } from '@/config/env';
-
-const dbUrl = `postgresql://${env.DB_USER}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}`;
-
-const client = postgres(dbUrl, { max: 1 });
-const db = drizzle(client);
+import { client, db } from '@/config/db';
 
 async function dropAllTables() {
   console.log('Dropping all tables...');

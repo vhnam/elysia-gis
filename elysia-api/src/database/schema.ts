@@ -1,2 +1,10 @@
-export { tableUsers } from '../modules/user/user.table';
-export { tableResetPasswordTokens } from '../modules/auth/auth.table';
+export {
+  sessionSchema,
+  accountSchema,
+  verificationSchema,
+  userRelationsSchema,
+  sessionRelationsSchema,
+  accountRelationsSchema,
+} from '@/modules/auth';
+
+export { userSchema } from '@/modules/user';

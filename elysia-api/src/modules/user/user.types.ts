@@ -1,4 +1,4 @@
-import { tableUsers } from './user.table';
+import { userSchema } from './user.schema';
 
-export type User = typeof tableUsers.$inferSelect;
-export type NewUser = typeof tableUsers.$inferInsert;
+export type User = typeof userSchema.$inferSelect;
+export type NewUser = typeof userSchema.$inferInsert;

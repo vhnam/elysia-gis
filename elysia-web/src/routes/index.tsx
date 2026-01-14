@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { useMap } from '@/hooks/use-map/use-map';
+import { useMap } from '@/hooks/use-map';
 
 import { Map, MapLoader } from '@/modules/map';
 

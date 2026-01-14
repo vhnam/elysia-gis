@@ -1,5 +1,4 @@
-export { errorHandler } from './error';
+export { authMiddleware } from './auth';
 export { corsMiddleware } from './cors';
-export { jwtAuth, requireAuth } from './auth';
+export { errorHandler } from './error';
 export type { ErrorResponse } from './error';
-export type { AuthContext } from './auth';

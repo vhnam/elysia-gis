@@ -1,19 +1,34 @@
 import { Elysia, status } from 'elysia';
 
-import { JWTPayload } from '@/utils/jwt';
-
-import { requireAuth } from '@/middleware';
+import { auth } from '@/utils/auth';
 
 import { UserModel } from './user.model';
 import { UserService } from './user.service';
 
 export const userController = new Elysia({
   prefix: '/api/v1/users',
+  tags: ['Users'],
 })
-  .use(requireAuth)
+  .derive(async ({ request: { headers } }) => {
+    const session = await auth.api.getSession({
+      headers,
+    });
+
+    return {
+      auth: session
+        ? {
+            user: session.user,
+            session: session.session,
+          }
+        : null,
+    };
+  })
   .get(
     '/',
-    async ({ query }) => {
+    async ({ query, auth }) => {
+      if (!auth?.user) {
+        throw status(401, 'Unauthorized');
+      }
       return await UserService.getAllUsers(query as UserModel.GetUsersRequest);
     },
     {
@@ -23,7 +38,10 @@ export const userController = new Elysia({
   )
   .get(
     '/:id',
-    async ({ params }: { params: UserModel.GetUserRequest }) => {
+    async ({ params, auth }) => {
+      if (!auth?.user) {
+        throw status(401, 'Unauthorized');
+      }
       const user = await UserService.getUserById(params.id);
 
       if (!user) {
@@ -33,12 +51,16 @@ export const userController = new Elysia({
       return user;
     },
     {
+      params: UserModel.getUserRequest,
       response: UserModel.userResponse,
     },
   )
   .post(
     '/',
-    async ({ body }) => {
+    async ({ body, auth }) => {
+      if (!auth?.user) {
+        throw status(401, 'Unauthorized');
+      }
       return await UserService.createUser(body);
     },
     {
@@ -48,12 +70,12 @@ export const userController = new Elysia({
   )
   .get(
     '/me',
-    async ({ jwt }) => {
-      // The 'jwt' object does not have a 'user' property directly.
-      // Instead, use the jwt.verify() method to get the payload.
-      const payload = (await jwt.verify()) as JWTPayload;
-      // Now access userId on the payload itself
-      const userProfile = await UserService.getUserById(payload.userId);
+    async ({ auth }) => {
+      if (!auth?.user) {
+        throw status(401, 'Unauthorized');
+      }
+
+      const userProfile = await UserService.getUserById(auth.user.id);
 
       if (!userProfile) {
         throw status(404, 'User not found');

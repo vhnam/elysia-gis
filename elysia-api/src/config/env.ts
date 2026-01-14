@@ -8,8 +8,7 @@ const getEnv = (key: string, defaultValue: string): string => {
 
 export const env = {
   NODE_ENV: getEnv('NODE_ENV', 'development'),
-  JWT_SECRET: getEnv('JWT_SECRET', 'your-secret-key-change-in-production'),
-  JWT_EXPIRES_IN: getEnv('JWT_EXPIRES_IN', '7d'),
+  FRONTEND_URL: getEnv('FRONTEND_URL', 'http://localhost:3000'),
 
   API_PORT: parseInt(getEnv('API_PORT', '4000')),
   DB_HOST: getEnv('DB_HOST', 'localhost'),
@@ -23,5 +22,14 @@ export const env = {
   EMAIL_USERNAME: getEnv('EMAIL_USERNAME', 'makoto'),
   EMAIL_PASSWORD: getEnv('EMAIL_PASSWORD', '12345678'),
 
-  FRONTEND_URL: getEnv('FRONTEND_URL', 'http://localhost:3000'),
+  BETTER_AUTH_SECRET: getEnv(
+    'BETTER_AUTH_SECRET',
+    'your-secret-key-change-in-production',
+  ),
+  BETTER_AUTH_URL: getEnv('BETTER_AUTH_URL', 'http://localhost:3000'),
+
+  // Super Administrator
+  SUPER_ADMIN_EMAIL: getEnv('SUPER_ADMIN_EMAIL', 'admin@example.com'),
+  SUPER_ADMIN_PASSWORD: getEnv('SUPER_ADMIN_PASSWORD', 'admin123'),
+  SUPER_ADMIN_NAME: getEnv('SUPER_ADMIN_NAME', 'Super Administrator'),
 } as const;

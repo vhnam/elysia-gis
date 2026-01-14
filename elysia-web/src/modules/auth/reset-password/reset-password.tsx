@@ -1,3 +1,4 @@
+import { useResetPassword } from './reset-password.actions';
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/field';
 import PasswordInput from '@/components/ui/password-input';
 
-import { useResetPassword } from './reset-password.actions';
 
 export const ResetPasswordForm = () => {
   const { form } = useResetPassword();

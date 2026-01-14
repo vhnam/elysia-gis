@@ -1,5 +1,5 @@
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
-import { type ComponentProps, useState } from 'react';
+import { useState } from 'react';
 
 import {
   InputGroup,
@@ -8,6 +8,7 @@ import {
   InputGroupInput,
 } from './input-group';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
+import type { ComponentProps } from 'react';
 
 type PasswordInputProps = Omit<ComponentProps<'input'>, 'type'>;
 
