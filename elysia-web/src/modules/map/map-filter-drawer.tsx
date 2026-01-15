@@ -1,4 +1,4 @@
-import { IconFilter2 } from '@tabler/icons-react';
+import { IconAdjustmentsHorizontal } from '@tabler/icons-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +15,7 @@ const MapFilterDrawer = () => {
     <Drawer direction="left">
       <DrawerTrigger asChild>
         <Button variant="ghost" size="icon-sm" aria-label="Filter">
-          <IconFilter2 />
+          <IconAdjustmentsHorizontal />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="z-60 !rounded-none">

@@ -58,11 +58,8 @@ const UserAvatar = ({ user }: UserAvatarProps) => {
         }
       />
       <TooltipContent>
-        <p>
-          {user.name}
-          <br />
-          {user.email}
-        </p>
+        <p className="text-sm font-medium">{user.name}</p>
+        <p className="text-xs text-muted-foreground">{user.email}</p>
       </TooltipContent>
     </Tooltip>
   );
@@ -83,7 +80,10 @@ const UserMenu = ({ user }: UserMenuProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            <p className="text-sm font-medium">{user.name}</p>
+            <p className="text-xs text-muted-foreground">{user.email}</p>
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleProfile}>
             <IconUserCircle />
