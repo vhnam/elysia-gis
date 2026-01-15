@@ -111,7 +111,7 @@ export const MapUser = () => {
   const { user } = useAuthStore();
 
   return (
-    <div className="absolute top-4 right-4 z-50">
+    <div className="absolute top-2 right-2 z-50">
       {user ? <UserMenu user={user} /> : <SignInButton />}
     </div>
   );

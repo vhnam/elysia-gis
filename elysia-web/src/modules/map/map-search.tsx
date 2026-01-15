@@ -1,4 +1,4 @@
-import { IconFilter2, IconSearch } from '@tabler/icons-react';
+import { IconSearch } from '@tabler/icons-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -7,18 +7,21 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group';
 
+import MapFilterDrawer from './map-filter-drawer';
+
 export const MapSearch = () => {
   return (
-    <div className="absolute top-4 left-4 z-[1000]">
-      <InputGroup className="w-full bg-white h-10">
-        <InputGroupInput className="w-60" placeholder="Search by area..." />
+    <div className="absolute top-2 left-2 z-10">
+      <InputGroup className="w-full bg-white md:h-10">
+        <InputGroupInput
+          className="w-40 md:w-60"
+          placeholder="Search by area..."
+        />
         <InputGroupAddon align="inline-end">
           <Button variant="ghost" size="icon-sm" aria-label="Search">
             <IconSearch />
           </Button>
-          <Button variant="ghost" size="icon-sm" aria-label="Filter">
-            <IconFilter2 />
-          </Button>
+          <MapFilterDrawer />
         </InputGroupAddon>
       </InputGroup>
     </div>
