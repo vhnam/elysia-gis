@@ -9,7 +9,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
-import MapFilterDrawer from './map-filter-drawer';
+import { MapFilterDrawer } from './map-filter-drawer';
 
 export const MapSearch = () => {
   return (
