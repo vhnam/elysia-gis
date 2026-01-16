@@ -24,7 +24,7 @@ async function seedAdministrativeUnits() {
   console.log('🌱 Starting administrative unit seed...');
 
   try {
-    // Read GeoJSON files for VN-34 dataset
+    // Read GeoJSON files for Administrative Unit dataset
     const provincesPath = join(
       DATA_DIR,
       'administrative-unit/administrative-unit__provinces.geojson',
@@ -41,7 +41,7 @@ async function seedAdministrativeUnits() {
     );
 
     console.log(
-      `📍 Found ${provincesData.features.length} provinces and ${wardsData.features.length} wards in VN-34 dataset`,
+      `📍 Found ${provincesData.features.length} provinces and ${wardsData.features.length} wards in Administrative Unit dataset`,
     );
 
     // Clear existing data
@@ -121,7 +121,7 @@ async function seedAdministrativeUnitsLegacy() {
   console.log('🌱 Starting administrative unit legacy seed...');
 
   try {
-    // Read GeoJSON files for VN-63 dataset
+    // Read GeoJSON files for Administrative Unit Legacy dataset
     const provincesPath = join(
       DATA_DIR,
       'administrative-unit-legacy/administrative-unit-legacy__provinces.geojson',
@@ -153,6 +153,7 @@ async function seedAdministrativeUnitsLegacy() {
 
     // Insert provinces
     console.log('📥 Inserting legacy provinces...');
+    let provinceCount = 0;
     for (const feature of provincesData.features) {
       const { properties, geometry } = feature;
       const additionalData: AdministrativeUnitLegacyAdditionalData = {};
@@ -170,12 +171,15 @@ async function seedAdministrativeUnitsLegacy() {
           NOW(),
           NOW()
         )
+        ON CONFLICT (code) DO NOTHING
       `);
+      provinceCount++;
     }
-    console.log(`✅ Inserted ${provincesData.features.length} legacy provinces`);
+    console.log(`✅ Inserted ${provinceCount} legacy provinces`);
 
     // Insert districts
     console.log('📥 Inserting legacy districts...');
+    let districtCount = 0;
     for (const feature of districtsData.features) {
       const { properties, geometry } = feature;
       const additionalData: AdministrativeUnitLegacyAdditionalData = {
@@ -196,49 +200,73 @@ async function seedAdministrativeUnitsLegacy() {
           NOW(),
           NOW()
         )
+        ON CONFLICT (code) DO NOTHING
       `);
+      districtCount++;
     }
-    console.log(`✅ Inserted ${districtsData.features.length} legacy districts`);
+    console.log(`✅ Inserted ${districtCount} legacy districts`);
 
     // Insert wards
     console.log('📥 Inserting legacy wards...');
     let wardCount = 0;
+    let errorCount = 0;
     for (const feature of wardsData.features) {
       const { properties, geometry } = feature;
-      const additionalData: AdministrativeUnitLegacyAdditionalData = {
-        parentId: properties.ma_tinh,
-        parentName: properties.ten_tinh,
-        districtId: properties.ma_huyen,
-        districtName: properties.ten_huyen,
-      };
+      try {
+        const additionalData: AdministrativeUnitLegacyAdditionalData = {
+          parentId: properties.ma_tinh,
+          parentName: properties.ten_tinh,
+          districtId: properties.ma_huyen,
+          districtName: properties.ten_huyen,
+        };
 
-      await db.execute(sql`
-        INSERT INTO administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
-        VALUES (
-          ${createId()},
-          ${properties.ma_xa},
-          ${properties.ten_xa},
-          'ward',
-          ${properties.stt},
-          ST_GeomFromGeoJSON(${JSON.stringify(geometry)}),
-          ${JSON.stringify(additionalData)}::jsonb,
-          NOW(),
-          NOW()
-        )
-      `);
-      wardCount++;
-      if (wardCount % 100 === 0) {
-        console.log(`  ... inserted ${wardCount} legacy wards`);
+        await db.execute(sql`
+          INSERT INTO administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
+          VALUES (
+            ${createId()},
+            ${properties.ma_xa},
+            ${properties.ten_xa},
+            'ward',
+            ${properties.stt},
+            ST_GeomFromGeoJSON(${JSON.stringify(geometry)}),
+            ${JSON.stringify(additionalData)}::jsonb,
+            NOW(),
+            NOW()
+          )
+          ON CONFLICT (code) DO NOTHING
+        `);
+        wardCount++;
+        if (wardCount % 100 === 0) {
+          console.log(`  ... inserted ${wardCount} legacy wards`);
+        }
+      } catch (error: any) {
+        errorCount++;
+        console.error(
+          `❌ Error inserting ward ${properties.ma_xa} (${properties.ten_xa}):`,
+          error.message || error,
+        );
+        // Continue with next ward instead of failing completely
+        if (errorCount > 10) {
+          throw new Error(
+            `Too many errors (${errorCount}). Stopping seed process.`,
+          );
+        }
       }
     }
-    console.log(`✅ Inserted ${wardCount} legacy wards`);
+    console.log(`✅ Inserted ${wardCount} legacy wards${errorCount > 0 ? ` (${errorCount} errors)` : ''}`);
 
     console.log('✅ Administrative unit legacy seed completed successfully!');
   } catch (error: any) {
     console.error(
       '❌ Error seeding administrative units legacy:',
-      error.message,
+      error.message || error,
     );
+    if (error.stack) {
+      console.error('Stack trace:', error.stack);
+    }
+    if (error.cause) {
+      console.error('Cause:', error.cause);
+    }
     throw error;
   }
 }
