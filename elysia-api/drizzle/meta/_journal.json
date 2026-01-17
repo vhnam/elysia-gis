@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1768412831930,
-      "tag": "0000_futuristic_lord_tyger",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1768505503006,
-      "tag": "0001_faulty_naoko",
+      "when": 1768589075508,
+      "tag": "0000_busy_overlord",
       "breakpoints": true
     }
   ]

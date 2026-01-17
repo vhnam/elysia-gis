@@ -11,14 +11,16 @@ services:
       - "${API_PORT}:4000"
     volumes:
       - ./elysia-api:/elysia-api
+      - elysia-api-node-modules:/app/node_modules
     command: bun run dev
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgis/postgis:17-3.5
     platform: linux/amd64
-    container_name: elysia-gis
+    container_name: elysia-db
     env_file:
       - .env
     environment:
@@ -26,7 +28,7 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - elysia-gis:/var/lib/postgresql/data
+      - elysia-db-data:/var/lib/postgresql/data
     ports:
       - "${DB_PORT}:5432"
     healthcheck:
@@ -36,24 +38,6 @@ services:
       retries: 5
     restart: unless-stopped
 
-  # web:
-  #   image: elysia-web
-  #   build:
-  #     context: ./elysia-web
-  #     dockerfile: Dockerfile
-  #   container_name: elysia-web
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     NODE_OPTIONS: --max-old-space-size=4096
-  #   ports:
-  #     - "${WEB_PORT}:3000"
-  #   volumes:
-  #     - ./elysia-web:/elysia-web
-  #     - /elysia-web/node_modules
-  #   depends_on:
-  #     - api
-  #     - db
-
 volumes:
-  elysia-gis:
+  elysia-db-data:
+  elysia-api-node-modules:

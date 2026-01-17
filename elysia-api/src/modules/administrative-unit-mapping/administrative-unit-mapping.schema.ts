@@ -1,15 +1,20 @@
 import { createId } from '@paralleldrive/cuid2';
 import { relations } from 'drizzle-orm';
-import { index, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { index, pgSchema, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { administrativeUnitSchema } from '@/modules/administrative-unit';
 import { administrativeUnitLegacySchema } from '@/modules/administrative-unit-legacy';
 
 /**
+ * GIS schema
+ */
+const gisSchema = pgSchema('gis');
+
+/**
  * Administrative Unit Mapping
  * Maps between current (VN-34) and legacy (VN-63) administrative units
  */
-export const administrativeUnitMappingSchema = pgTable(
+export const administrativeUnitMappingSchema = gisSchema.table(
   'administrative_unit_mapping',
   {
     id: text('id')

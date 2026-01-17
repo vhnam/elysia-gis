@@ -4,10 +4,6 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import { client, db } from '@/config/db';
-import {
-  administrativeUnitLegacySchema,
-  administrativeUnitSchema,
-} from '@/database/schema';
 import type { AdministrativeUnitAdditionalData } from '@/modules/administrative-unit';
 import type { AdministrativeUnitLegacyAdditionalData } from '@/modules/administrative-unit-legacy';
 import type {
@@ -46,7 +42,7 @@ async function seedAdministrativeUnits() {
 
     // Clear existing data
     console.log('🗑️  Clearing existing administrative unit data...');
-    await db.delete(administrativeUnitSchema);
+    await db.execute(sql`DELETE FROM gis.administrative_unit`);
 
     // Insert provinces
     console.log('📥 Inserting provinces...');
@@ -60,7 +56,7 @@ async function seedAdministrativeUnits() {
       };
 
       await db.execute(sql`
-        INSERT INTO administrative_unit (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
+        INSERT INTO gis.administrative_unit (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
         VALUES (
           ${createId()},
           ${properties.ma_tinh},
@@ -90,7 +86,7 @@ async function seedAdministrativeUnits() {
       };
 
       await db.execute(sql`
-        INSERT INTO administrative_unit (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
+        INSERT INTO gis.administrative_unit (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
         VALUES (
           ${createId()},
           ${properties.ma_xa},
@@ -149,7 +145,7 @@ async function seedAdministrativeUnitsLegacy() {
 
     // Clear existing data
     console.log('🗑️  Clearing existing administrative unit legacy data...');
-    await db.delete(administrativeUnitLegacySchema);
+    await db.execute(sql`DELETE FROM gis.administrative_unit_legacy`);
 
     // Insert provinces
     console.log('📥 Inserting legacy provinces...');
@@ -159,7 +155,7 @@ async function seedAdministrativeUnitsLegacy() {
       const additionalData: AdministrativeUnitLegacyAdditionalData = {};
 
       await db.execute(sql`
-        INSERT INTO administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
+        INSERT INTO gis.administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
         VALUES (
           ${createId()},
           ${properties.ma_tinh},
@@ -188,7 +184,7 @@ async function seedAdministrativeUnitsLegacy() {
       };
 
       await db.execute(sql`
-        INSERT INTO administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
+        INSERT INTO gis.administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
         VALUES (
           ${createId()},
           ${properties.ma_huyen},
@@ -221,7 +217,7 @@ async function seedAdministrativeUnitsLegacy() {
         };
 
         await db.execute(sql`
-          INSERT INTO administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
+          INSERT INTO gis.administrative_unit_legacy (id, code, name, level, "order", geom, additional_data, created_at, updated_at)
           VALUES (
             ${createId()},
             ${properties.ma_xa},

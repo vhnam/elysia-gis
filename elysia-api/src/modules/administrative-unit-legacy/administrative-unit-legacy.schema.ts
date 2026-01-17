@@ -3,8 +3,7 @@ import {
   index,
   integer,
   jsonb,
-  pgEnum,
-  pgTable,
+  pgSchema,
   text,
   timestamp,
 } from 'drizzle-orm/pg-core';
@@ -12,9 +11,14 @@ import {
 import { geometry } from '@/database/types/geometry';
 
 /**
+ * GIS schema
+ */
+const gisSchema = pgSchema('gis');
+
+/**
  * Administrative unit legacy level enum
  */
-export const administrativeUnitLegacyLevelEnum = pgEnum(
+export const administrativeUnitLegacyLevelEnum = gisSchema.enum(
   'administrative_unit_legacy_level',
   ['province', 'district', 'ward'],
 );
@@ -34,7 +38,7 @@ export type AdministrativeUnitLegacyAdditionalData = {
 /**
  * Administrative Unit Legacy (VN-63 Dataset)
  */
-export const administrativeUnitLegacySchema = pgTable(
+export const administrativeUnitLegacySchema = gisSchema.table(
   'administrative_unit_legacy',
   {
     id: text('id')
