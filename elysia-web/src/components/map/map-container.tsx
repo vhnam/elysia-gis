@@ -51,19 +51,45 @@ export const MapContainer = ({ children }: PropsWithChildren) => {
               minzoom: 0,
               maxzoom: 19,
               attribution: '© Google contributors',
-            },
+            }
           },
           layers: [
             {
-              id: 'osm-tiles',
+              id: 'carto-tiles',
               type: 'raster',
-              source: 'osm-tiles',
+              source: 'carto-tiles',
             },
           ],
         },
         center: [106.6873555, 10.7634781],
         zoom,
         fadeDuration: 0,
+      });
+
+      map.on('load', () => {
+        map.addSource('elysia-administrative-unit-provinces-tiles', {
+          type: 'vector',
+          tiles: ['http://localhost:7800/vt.administrative_unit_provinces/{z}/{x}/{y}.pbf'],
+          minzoom: 0,
+          maxzoom: 19,
+          bounds: [
+            102.143914,
+            6.931062,
+            117.393262,
+            23.392643],
+        });
+
+        map.addLayer({
+          'id': 'elysia-administrative-unit-provinces-tiles',
+          'source': 'elysia-administrative-unit-provinces-tiles',
+          'source-layer': 'vt.administrative_unit_provinces',
+          type: 'fill',
+          paint: {
+            'fill-color': '#34a85a',
+            'fill-opacity': 0.3,
+            'fill-outline-color': '#000',
+          }
+        });
       });
 
       setMapInstanceFromStore(map);

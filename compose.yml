@@ -38,6 +38,18 @@ services:
       retries: 5
     restart: unless-stopped
 
+  pg_tileserv:
+    image: pramsey/pg_tileserv:latest
+    container_name: pg_tileserv
+    environment:
+      DATABASE_URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@db:5432/${DB_NAME}
+    ports:
+      - "7800:7800"
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   elysia-db-data:
   elysia-api-node-modules:

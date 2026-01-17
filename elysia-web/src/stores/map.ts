@@ -15,7 +15,7 @@ type MapActions = {
 export type MapStore = MapState & MapActions;
 
 const initialState: MapState = {
-  zoom: 14,
+  zoom: 8,
   mapInstance: null,
 };
 
