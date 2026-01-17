@@ -7,8 +7,8 @@ export interface ErrorResponse {
   statusCode: number;
 }
 
-export const errorHandler = new Elysia({
-  name: 'error-handler',
+export const errorMiddleware = new Elysia({
+  name: 'error-middleware',
 }).onError(({ code, error, set }) => {
   // Handle validation errors
   if (code === 'VALIDATION') {

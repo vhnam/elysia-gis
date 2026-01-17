@@ -20,10 +20,10 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
-import { useForgotPassword } from './forgot-password.actions';
+import { useForgotPasswordActions } from './forgot-password.actions';
 
 export const ForgotPasswordForm = () => {
-  const { form, isSuccess } = useForgotPassword();
+  const { form, isSuccess } = useForgotPasswordActions();
 
   if (isSuccess) {
     return (
@@ -86,7 +86,7 @@ export const ForgotPasswordForm = () => {
       </Card>
 
       <FieldDescription className="px-6 text-center">
-        Remember your password? <Link to="/auth/login">Login</Link>
+        Remember your password? <Link to="/auth/sign-in">Sign In</Link>
       </FieldDescription>
     </div>
   );

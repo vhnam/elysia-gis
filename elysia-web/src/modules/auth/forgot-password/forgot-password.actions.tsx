@@ -7,7 +7,7 @@ import { forgotPasswordSchema } from '@/schemas/auth.schema';
 
 import { useForgotPasswordMutation } from '@/queries/auth';
 
-export const useForgotPassword = () => {
+export const useForgotPasswordActions = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const forgotPasswordMutation = useForgotPasswordMutation({

@@ -1,4 +1,10 @@
-export { AuthModel } from './auth.model';
-export { Auth } from './auth.service';
-export { tableResetPasswordTokens } from './auth.table';
+export {
+  accountRelationsSchema,
+  accountSchema,
+  sessionRelationsSchema,
+  sessionSchema,
+  userRelationsSchema,
+  verificationSchema,
+} from './auth.schema';
+
 export { authController } from './auth.controller';

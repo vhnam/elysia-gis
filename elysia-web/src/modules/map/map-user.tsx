@@ -1,6 +1,7 @@
 import { IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { Link, useRouter } from '@tanstack/react-router';
-import { startTransition } from 'react';
+
+import useAuthStore from '@/stores/auth';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,61 +20,57 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import useAuthStore, { User } from '@/stores/auth';
+import type { User } from '@/models';
 
-const getInitials = (user: User): string => {
-  return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+import { useMapActions } from './map.actions';
+
+const getAvatarPlaceholder = (user: User): string => {
+  return `${user.name
+    .split(' ')
+    .map((word: string) => word.charAt(0))
+    .join('')}`.toUpperCase();
 };
 
 interface UserAvatarProps {
   user: User;
 }
 
+interface UserMenuProps {
+  user: User;
+}
+
 const UserAvatar = ({ user }: UserAvatarProps) => {
-  const initials = getInitials(user);
-  const fullName = `${user.firstName} ${user.lastName}`;
+  const avatarPlaceholder = getAvatarPlaceholder(user);
 
   return (
     <Tooltip>
-      <TooltipTrigger>
-        <Avatar size="lg" className="cursor-pointer">
-          {user.imageUrl && <AvatarImage src={user.imageUrl} alt={fullName} />}
-          <AvatarFallback className="bg-primary text-primary-foreground">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
-      </TooltipTrigger>
+      <TooltipTrigger
+        render={
+          <Avatar
+            size="lg"
+            className="cursor-pointer border-2 border-primary border-solid"
+          >
+            {user.image && <AvatarImage src={user.image} alt={user.name} />}
+            <AvatarFallback className="bg-primary text-primary-foreground">
+              {avatarPlaceholder}
+            </AvatarFallback>
+          </Avatar>
+        }
+      />
       <TooltipContent>
-        <p>
-          {fullName}
-          <br />
-          {user.email}
-        </p>
+        <p className="text-sm font-medium">{user.name}</p>
+        <p className="text-xs text-muted-foreground">{user.email}</p>
       </TooltipContent>
     </Tooltip>
   );
 };
 
-interface UserMenuProps {
-  user: User;
-}
-
 const UserMenu = ({ user }: UserMenuProps) => {
   const router = useRouter();
-  const { setToken, setUser } = useAuthStore();
-
-  const handleLogout = () => {
-    setToken(null);
-    setUser(null);
-
-    startTransition(() => {
-      router.navigate({ to: '/auth/login' });
-    });
-  };
+  const { onSignOut } = useMapActions();
 
   const handleProfile = () => {
-    // TODO: Navigate to profile page when implemented
-    console.log('Navigate to profile');
+    router.navigate({ to: '/profile' });
   };
 
   return (
@@ -83,13 +80,16 @@ const UserMenu = ({ user }: UserMenuProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            <p className="text-sm font-medium">{user.name}</p>
+            <p className="text-xs text-muted-foreground">{user.email}</p>
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleProfile}>
             <IconUserCircle />
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout} variant="destructive">
+          <DropdownMenuItem onClick={onSignOut} variant="destructive">
             <IconLogout />
             Logout
           </DropdownMenuItem>
@@ -99,10 +99,10 @@ const UserMenu = ({ user }: UserMenuProps) => {
   );
 };
 
-const LoginButton = () => {
+const SignInButton = () => {
   return (
-    <Link to="/auth/login">
-      <Button variant="default">Login</Button>
+    <Link to="/auth/sign-in">
+      <Button variant="default">Sign In</Button>
     </Link>
   );
 };
@@ -111,8 +111,8 @@ export const MapUser = () => {
   const { user } = useAuthStore();
 
   return (
-    <div className="absolute top-4 right-4 z-50">
-      {user ? <UserMenu user={user} /> : <LoginButton />}
+    <div className="absolute top-2 right-2 z-50">
+      {user ? <UserMenu user={user} /> : <SignInButton />}
     </div>
   );
 };

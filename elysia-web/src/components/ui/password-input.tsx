@@ -1,5 +1,6 @@
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
-import { type ComponentProps, useState } from 'react';
+import { useState } from 'react';
+import type { ComponentProps } from 'react';
 
 import {
   InputGroup,
@@ -27,16 +28,18 @@ const PasswordInput = ({ ...props }: PasswordInputProps) => {
       />
       <InputGroupAddon align="inline-end">
         <Tooltip>
-          <TooltipTrigger>
-            <InputGroupButton
-              variant="ghost"
-              aria-label="Info"
-              size="icon-xs"
-              onClick={handleShowPassword}
-            >
-              {showPassword ? <IconEyeOff /> : <IconEye />}
-            </InputGroupButton>
-          </TooltipTrigger>
+          <TooltipTrigger
+            render={
+              <InputGroupButton
+                variant="ghost"
+                aria-label="Info"
+                size="icon-xs"
+                onClick={handleShowPassword}
+              >
+                {showPassword ? <IconEyeOff /> : <IconEye />}
+              </InputGroupButton>
+            }
+          />
           <TooltipContent>
             <p>{showPassword ? 'Hide password' : 'Show password'}</p>
           </TooltipContent>

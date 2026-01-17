@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1767875896592,
-      "tag": "0000_cultured_tarantula",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1767878572041,
-      "tag": "0001_fluffy_cerebro",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1768045345426,
-      "tag": "0002_violet_micromacro",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1768325831792,
-      "tag": "0003_opposite_zemo",
+      "when": 1768589075508,
+      "tag": "0000_busy_overlord",
       "breakpoints": true
     }
   ]

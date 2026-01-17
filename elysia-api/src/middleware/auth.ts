@@ -1,35 +1,22 @@
-import { Elysia, status } from 'elysia';
+import { Elysia } from 'elysia';
 
-import { type JWTPayload, jwtInstance } from '@/utils/jwt';
+import { auth } from '@/utils/auth';
 
-export interface AuthContext {
-  userId: string;
-  username: string;
-}
+export const authMiddleware = new Elysia({ name: 'auth-middleware' })
+  .mount(auth.handler)
+  .macro({
+    auth: {
+      async resolve({ status, request: { headers } }) {
+        const session = await auth.api.getSession({
+          headers,
+        });
 
-export const jwtAuth = new Elysia({
-  name: 'jwt-auth',
-})
-  .use(jwtInstance)
-  .derive(async ({ headers, jwt }) => {
-    const authHeader = headers.authorization;
+        if (!session) return status(401);
 
-    if (!authHeader?.startsWith('Bearer ')) {
-      throw status(401, 'Missing or invalid authorization header');
-    }
-
-    const token = authHeader.substring(7);
-    const payload = await jwt.verify(token);
-
-    if (!payload) {
-      throw status(401, 'Invalid or expired token');
-    }
-
-    return {
-      user: payload as JWTPayload,
-    };
+        return {
+          user: session.user,
+          session: session.session,
+        };
+      },
+    },
   });
-
-export const requireAuth = new Elysia({
-  name: 'require-auth',
-}).use(jwtAuth);

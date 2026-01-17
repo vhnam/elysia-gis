@@ -12,12 +12,15 @@ import type {
   SignInResponse,
 } from './auth.types';
 
-export const useLoginMutation = (
+export const useSignInMutation = (
   options?: UseMutationOptions<SignInResponse, Error, SignInRequest>,
 ) =>
   useMutation({
     mutationFn: async (payload: SignInRequest) => {
-      const response = await api.post<SignInResponse>('/auth/sign-in', payload);
+      const response = await api.post<SignInResponse>(
+        '/auth/sign-in/email',
+        payload,
+      );
       return response.data;
     },
     ...options,
@@ -54,6 +57,17 @@ export const useResetPasswordMutation = (
         '/auth/reset-password',
         payload,
       );
+      return response.data;
+    },
+    ...options,
+  });
+
+export const useSignOutMutation = (
+  options?: UseMutationOptions<void, Error, void>,
+) =>
+  useMutation({
+    mutationFn: async () => {
+      const response = await api.post<void>('/auth/sign-out');
       return response.data;
     },
     ...options,

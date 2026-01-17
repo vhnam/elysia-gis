@@ -32,15 +32,25 @@ export const MapContainer = ({ children }: PropsWithChildren) => {
               maxzoom: 19,
               attribution: '© OpenStreetMap contributors',
             },
-            'arcgis-tiles': {
+            'carto-tiles': {
               type: 'raster',
               tiles: [
-                'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{x}/{y}',
+                'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
               ],
               tileSize: 256,
               minzoom: 0,
               maxzoom: 19,
-              attribution: '© Esri',
+              attribution: '© Carto contributors',
+            },
+            'googlemaps-tiles': {
+              type: 'raster',
+              tiles: [
+                'https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
+              ],
+              tileSize: 256,
+              minzoom: 0,
+              maxzoom: 19,
+              attribution: '© Google contributors',
             },
           },
           layers: [

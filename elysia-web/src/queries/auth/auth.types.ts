@@ -1,15 +1,14 @@
+import { User } from '@/models';
+
 export interface SignInRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface SignInResponse {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
+  redirect: boolean;
   token: string;
+  user: User;
 }
 
 export interface ForgotPasswordRequest {
@@ -28,4 +27,9 @@ export interface ResetPasswordRequest {
 
 export interface ResetPasswordResponse {
   message: string;
+}
+
+export interface AccountInfoResponse {
+  user: User;
+  data: Record<string, unknown>;
 }

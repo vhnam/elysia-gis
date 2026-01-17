@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { useMap } from '@/hooks/use-map/use-map';
+import { useMap } from '@/hooks/use-map';
+
+import { AppSidebar } from '@/components/app';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 import { Map, MapLoader } from '@/modules/map';
 
@@ -10,9 +13,12 @@ function App() {
   const { mapInstance } = useMap();
 
   return (
-    <div className="relative h-screen w-full">
-      <Map />
-      {!mapInstance && <MapLoader />}
-    </div>
+    <SidebarProvider defaultOpen={false}>
+      <AppSidebar />
+      <SidebarInset>
+        <Map />
+        {!mapInstance && <MapLoader />}
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

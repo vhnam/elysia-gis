@@ -1,9 +1,9 @@
 import { eq, like, sql } from 'drizzle-orm';
 
-import db from '@/config/db';
+import { db } from '@/config/db';
 
 import { UserModel } from './user.model';
-import { tableUsers } from './user.table';
+import { userSchema } from './user.schema';
 
 export abstract class UserService {
   static async getAllUsers({
@@ -13,22 +13,22 @@ export abstract class UserService {
   }: UserModel.GetUsersRequest): Promise<UserModel.GetUsersResponse> {
     const users = await db
       .select({
-        id: tableUsers.id,
-        username: tableUsers.username,
-        firstName: tableUsers.firstName,
-        lastName: tableUsers.lastName,
-        email: tableUsers.email,
-        createdAt: tableUsers.createdAt,
-        updatedAt: tableUsers.updatedAt,
+        id: userSchema.id,
+        name: userSchema.name,
+        email: userSchema.email,
+        emailVerified: userSchema.emailVerified,
+        image: userSchema.image,
+        createdAt: userSchema.createdAt,
+        updatedAt: userSchema.updatedAt,
       })
-      .from(tableUsers)
+      .from(userSchema)
       .limit(limit)
       .offset((page - 1) * limit)
-      .where(search ? like(tableUsers.username, `%${search}%`) : undefined);
+      .where(search ? like(userSchema.name, `%${search}%`) : undefined);
 
     const countResult = await db
       .select({ count: sql<number>`count(*)::int` })
-      .from(tableUsers);
+      .from(userSchema);
 
     const total = countResult[0]?.count || 0;
 
@@ -46,16 +46,16 @@ export abstract class UserService {
   ): Promise<UserModel.UserResponse | null> {
     const users = await db
       .select({
-        id: tableUsers.id,
-        username: tableUsers.username,
-        firstName: tableUsers.firstName,
-        lastName: tableUsers.lastName,
-        email: tableUsers.email,
-        createdAt: tableUsers.createdAt,
-        updatedAt: tableUsers.updatedAt,
+        id: userSchema.id,
+        name: userSchema.name,
+        email: userSchema.email,
+        emailVerified: userSchema.emailVerified,
+        image: userSchema.image,
+        createdAt: userSchema.createdAt,
+        updatedAt: userSchema.updatedAt,
       })
-      .from(tableUsers)
-      .where(eq(tableUsers.id, userId))
+      .from(userSchema)
+      .where(eq(userSchema.id, userId))
       .limit(1);
 
     return users[0] || null;
@@ -64,25 +64,23 @@ export abstract class UserService {
   static async createUser(
     data: UserModel.CreateUserRequest,
   ): Promise<UserModel.UserResponse> {
-    const hashedPassword = await Bun.password.hash(data.password);
-
+    // Note: User creation should be handled by better-auth
+    // This method is kept for backward compatibility but should use better-auth's signUp
     const [newUser] = await db
-      .insert(tableUsers)
+      .insert(userSchema)
       .values({
-        username: data.username,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        name: data.name,
         email: data.email,
-        password: hashedPassword,
+        emailVerified: false,
       })
       .returning({
-        id: tableUsers.id,
-        username: tableUsers.username,
-        firstName: tableUsers.firstName,
-        lastName: tableUsers.lastName,
-        email: tableUsers.email,
-        createdAt: tableUsers.createdAt,
-        updatedAt: tableUsers.updatedAt,
+        id: userSchema.id,
+        name: userSchema.name,
+        email: userSchema.email,
+        emailVerified: userSchema.emailVerified,
+        image: userSchema.image,
+        createdAt: userSchema.createdAt,
+        updatedAt: userSchema.updatedAt,
       });
 
     return newUser;
@@ -92,30 +90,31 @@ export abstract class UserService {
     userId: string,
     data: UserModel.UpdateUserRequest,
   ): Promise<UserModel.UserResponse> {
-    const hashedPassword = data.password
-      ? await Bun.password.hash(data.password)
-      : undefined;
-
-    const updateData = {
-      ...(hashedPassword && { password: hashedPassword }),
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
+    const updateData: {
+      name?: string;
+      email?: string;
+      image?: string;
+      updatedAt: Date;
+    } = {
       updatedAt: new Date(),
     };
 
+    if (data.name) updateData.name = data.name;
+    if (data.email) updateData.email = data.email;
+    if (data.image) updateData.image = data.image;
+
     const [updatedUser] = await db
-      .update(tableUsers)
+      .update(userSchema)
       .set(updateData)
-      .where(eq(tableUsers.id, userId))
+      .where(eq(userSchema.id, userId))
       .returning({
-        id: tableUsers.id,
-        username: tableUsers.username,
-        firstName: tableUsers.firstName,
-        lastName: tableUsers.lastName,
-        email: tableUsers.email,
-        createdAt: tableUsers.createdAt,
-        updatedAt: tableUsers.updatedAt,
+        id: userSchema.id,
+        name: userSchema.name,
+        email: userSchema.email,
+        emailVerified: userSchema.emailVerified,
+        image: userSchema.image,
+        createdAt: userSchema.createdAt,
+        updatedAt: userSchema.updatedAt,
       });
 
     return updatedUser;

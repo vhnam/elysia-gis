@@ -1,13 +1,6 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import postgres from 'postgres';
 
-import { env } from '@/config/env';
-
-const dbUrl = `postgresql://${env.DB_USER}:${env.DB_PASSWORD}@${env.DB_HOST}:${env.DB_PORT}/${env.DB_NAME}`;
-
-const client = postgres(dbUrl, { max: 1 });
-const db = drizzle(client);
+import { client, db } from '@/config/db';
 
 async function dropAllTables() {
   console.log('Dropping all tables...');
@@ -23,20 +16,48 @@ async function dropAllTables() {
 
   if (tables.length === 0) {
     console.log('No tables to drop.');
+  } else {
+    console.log(`Found ${tables.length} table(s) to drop:`);
+    tables.forEach((table: any) => {
+      console.log(`  - ${table.tablename}`);
+    });
+
+    // Drop all tables with CASCADE to handle foreign key constraints
+    for (const table of tables) {
+      await client.unsafe(`DROP TABLE IF EXISTS "${table.tablename}" CASCADE;`);
+    }
+
+    console.log('✅ All tables dropped successfully!');
+  }
+}
+
+async function dropAllTypes() {
+  console.log('Dropping all custom types...');
+
+  // Get all enum types in the public schema
+  const types = await client`
+    SELECT typname 
+    FROM pg_type 
+    WHERE typnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')
+    AND typtype = 'e';
+  `;
+
+  if (types.length === 0) {
+    console.log('No custom types to drop.');
     return;
   }
 
-  console.log(`Found ${tables.length} table(s) to drop:`);
-  tables.forEach((table: any) => {
-    console.log(`  - ${table.tablename}`);
+  console.log(`Found ${types.length} type(s) to drop:`);
+  types.forEach((type: any) => {
+    console.log(`  - ${type.typname}`);
   });
 
-  // Drop all tables with CASCADE to handle foreign key constraints
-  for (const table of tables) {
-    await client.unsafe(`DROP TABLE IF EXISTS "${table.tablename}" CASCADE;`);
+  // Drop all enum types with CASCADE
+  for (const type of types) {
+    await client.unsafe(`DROP TYPE IF EXISTS "${type.typname}" CASCADE;`);
   }
 
-  console.log('✅ All tables dropped successfully!');
+  console.log('✅ All custom types dropped successfully!');
 }
 
 async function resetAndMigrate() {
@@ -44,7 +65,11 @@ async function resetAndMigrate() {
     // Step 1: Drop all tables
     await dropAllTables();
 
-    // Step 2: Run migrations
+    // Step 2: Drop all custom types (enums)
+    console.log('');
+    await dropAllTypes();
+
+    // Step 3: Run migrations
     console.log('\nRunning migrations...');
     await migrate(db, { migrationsFolder: './drizzle' });
     console.log('✅ Migrations completed successfully!');
