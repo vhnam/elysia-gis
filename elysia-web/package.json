@@ -8,8 +8,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint",
-    "format": "prettier",
-    "check": "prettier --write . && eslint --fix"
+    "format": "prettier --write .",
+    "check": "prettier --check .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
@@ -50,9 +51,14 @@
     "@vitejs/plugin-react": "^5.1.2",
     "jsdom": "^27.4.0",
     "prettier": "^3.8.0",
+    "pretty-quick": "^4.2.2",
+    "simple-git-hooks": "^2.13.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",
     "vitest": "^3.2.4",
     "web-vitals": "^5.1.0"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }

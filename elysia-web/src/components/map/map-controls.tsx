@@ -19,7 +19,7 @@ export const MapControls = () => {
   const { onZoomIn, onZoomOut, onFullscreen, onCurrentLocation } = useMap();
 
   return (
-    <div className="absolute bottom-12 right-2 z-[1000] flex flex-col gap-2">
+    <div className="absolute bottom-12 right-2 z-10 flex flex-col gap-2">
       <Tooltip>
         <TooltipTrigger
           render={

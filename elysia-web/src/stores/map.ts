@@ -1,6 +1,6 @@
+import type { Map } from 'maplibre-gl';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { Map } from 'maplibre-gl';
 
 type MapState = {
   zoom: number;

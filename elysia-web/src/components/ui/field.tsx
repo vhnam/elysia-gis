@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
-import { useMemo } from 'react';
 import type { VariantProps } from 'class-variance-authority';
+import { useMemo } from 'react';
 
 import { cn } from '@/utils/ui';
 
