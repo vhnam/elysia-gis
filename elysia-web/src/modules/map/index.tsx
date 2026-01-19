@@ -1,2 +1,2 @@
-export { Map } from './map';
-export { MapLoader } from './map-loader';
+export { Map } from './map/map';
+export { MapLoader } from './map/map-loader';

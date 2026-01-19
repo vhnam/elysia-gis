@@ -1,6 +1,6 @@
 import { MapContainer, MapControls } from '@/components/map';
 
-import { MapCreateRequestDialogTrigger } from './map-create-request-dialog-trigger';
+import { MapCreateRequestDialogTrigger } from '../map-create-request-dialog-trigger';
 import { MapSearch } from './map-search';
 import { MapUser } from './map-user';
 
