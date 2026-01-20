@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useGeolocation } from '@/hooks/use-geolocation';
 
@@ -10,12 +10,12 @@ export const useMap = () => {
 
   const center = useMemo(() => {
     return {
-      latitude: mapInstance?.getCenter().lat,
-      longitude: mapInstance?.getCenter().lng,
+      latitude: mapInstance?.getCenter().lat ?? 0,
+      longitude: mapInstance?.getCenter().lng ?? 0,
     };
-  }, [mapInstance]);
+  }, [mapInstance?.getCenter]);
 
-  const handleCurrentLocation = async () => {
+  const handleCurrentLocation = useCallback(async () => {
     if (!mapInstance) {
       return;
     }
@@ -29,25 +29,25 @@ export const useMap = () => {
     } catch (error) {
       console.error('Error getting current location:', error);
     }
-  };
+  }, [mapInstance, getCurrentLocation]);
 
-  const handleZoomIn = () => {
+  const handleZoomIn = useCallback(() => {
     if (mapInstance && zoom < 20) {
       const zoomLevel = zoom + 1;
       setZoom(zoomLevel);
       mapInstance.zoomTo(zoomLevel);
     }
-  };
+  }, [mapInstance, zoom, setZoom]);
 
-  const handleZoomOut = () => {
+  const handleZoomOut = useCallback(() => {
     if (mapInstance && zoom > 0) {
       const zoomLevel = zoom - 1;
       setZoom(zoomLevel);
       mapInstance.zoomTo(zoomLevel);
     }
-  };
+  }, [mapInstance, zoom, setZoom]);
 
-  const handleFullscreen = () => {
+  const handleFullscreen = useCallback(() => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
       return;
@@ -62,7 +62,7 @@ export const useMap = () => {
         console.error('Error attempting to enable fullscreen:', error);
       });
     }
-  };
+  }, [mapInstance]);
 
   return {
     center,

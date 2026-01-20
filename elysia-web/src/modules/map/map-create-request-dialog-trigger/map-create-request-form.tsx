@@ -1,4 +1,4 @@
-import { Activity, useEffect, useState } from 'react';
+import { Activity, startTransition, useEffect, useState } from 'react';
 
 import { useMap } from '@/hooks/use-map';
 
@@ -54,20 +54,22 @@ export const MapCreateRequestForm = () => {
     },
   });
 
+  const { handleSubmit, setFieldValue, Field: FormField, state } = form;
+
   useEffect(() => {
     if (center && !hasUserSetLocation) {
       const lat = center.latitude ?? 0;
       const lng = center.longitude ?? 0;
       if (lat !== 0 && lng !== 0) {
-        form.setFieldValue('latitude', lat);
-        form.setFieldValue('longitude', lng);
+        setFieldValue('latitude', lat);
+        setFieldValue('longitude', lng);
       }
     }
-  }, [center, form, hasUserSetLocation]);
+  }, [center, setFieldValue, hasUserSetLocation]);
 
   const handleDragEnd = (latitude: number, longitude: number) => {
-    form.setFieldValue('latitude', latitude);
-    form.setFieldValue('longitude', longitude);
+    setFieldValue('latitude', latitude);
+    setFieldValue('longitude', longitude);
     setHasUserSetLocation(true);
   };
 
@@ -75,8 +77,8 @@ export const MapCreateRequestForm = () => {
     if (center) {
       const lat = center.latitude ?? 0;
       const lng = center.longitude ?? 0;
-      form.setFieldValue('latitude', lat);
-      form.setFieldValue('longitude', lng);
+      setFieldValue('latitude', lat);
+      setFieldValue('longitude', lng);
     }
     setHasUserSetLocation(false);
     setIsEditMode(false);
@@ -89,11 +91,13 @@ export const MapCreateRequestForm = () => {
           className="relative"
           onSubmit={(e) => {
             e.preventDefault();
-            form.handleSubmit();
+            startTransition(() => {
+              handleSubmit();
+            });
           }}
         >
-          <FieldGroup className="mb-12 no-scrollbar h-[70vh] overflow-y-auto">
-            <form.Field name="name">
+          <FieldGroup className="mb-12 no-scrollbar overflow-y-auto h-[70vh]">
+            <FormField name="name">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -104,14 +108,14 @@ export const MapCreateRequestForm = () => {
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
                     type="text"
-                    placeholder="Enter your name"
+                    placeholder="Enter your name…"
                     required
                   />
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
               )}
-            </form.Field>
-            <form.Field name="email">
+            </FormField>
+            <FormField name="email">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>
@@ -126,14 +130,16 @@ export const MapCreateRequestForm = () => {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    type="text"
-                    placeholder="Enter your email"
+                    type="email"
+                    placeholder="Enter your email…"
+                    autoComplete="email"
+                    inputMode="email"
                   />
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
               )}
-            </form.Field>
-            <form.Field name="phone">
+            </FormField>
+            <FormField name="phone">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
@@ -143,15 +149,17 @@ export const MapCreateRequestForm = () => {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    type="text"
-                    placeholder="Enter your phone"
+                    type="tel"
+                    placeholder="Enter your phone…"
                     required
+                    autoComplete="tel"
+                    inputMode="tel"
                   />
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
               )}
-            </form.Field>
-            <form.Field name="address">
+            </FormField>
+            <FormField name="address">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>
@@ -166,14 +174,14 @@ export const MapCreateRequestForm = () => {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Enter your address"
+                    placeholder="Enter your address…"
                     className="resize-none"
                   />
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
               )}
-            </form.Field>
-            <form.Field name="requestType">
+            </FormField>
+            <FormField name="requestType">
               {(field) => (
                 <Field>
                   <FieldLabel>Request Type</FieldLabel>
@@ -202,8 +210,8 @@ export const MapCreateRequestForm = () => {
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
               )}
-            </form.Field>
-            <form.Field name="description">
+            </FormField>
+            <FormField name="description">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>
@@ -218,16 +226,16 @@ export const MapCreateRequestForm = () => {
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}
-                    placeholder="Enter your request description"
+                    placeholder="Enter your request description…"
                     className="resize-none"
                   />
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
               )}
-            </form.Field>
+            </FormField>
             <MapReview
-              latitude={form.state.values.latitude ?? center?.latitude ?? 0}
-              longitude={form.state.values.longitude ?? center?.longitude ?? 0}
+              latitude={state.values.latitude ?? center?.latitude ?? 0}
+              longitude={state.values.longitude ?? center?.longitude ?? 0}
               isEditMode={isEditMode}
               setIsEditMode={setIsEditMode}
             />
@@ -236,8 +244,8 @@ export const MapCreateRequestForm = () => {
             <DialogClose render={<Button variant="outline" />}>
               Cancel
             </DialogClose>
-            <Button type="submit" disabled={form.state.isSubmitting}>
-              {form.state.isSubmitting ? 'Creating...' : 'Create'}
+            <Button type="submit" disabled={state.isSubmitting}>
+              {state.isSubmitting ? 'Creating…' : 'Create'}
             </Button>
           </div>
         </form>
@@ -245,8 +253,8 @@ export const MapCreateRequestForm = () => {
       <Activity mode={isEditMode ? 'visible' : 'hidden'}>
         <div className="relative">
           <MapReview
-            latitude={form.state.values.latitude ?? center?.latitude ?? 0}
-            longitude={form.state.values.longitude ?? center?.longitude ?? 0}
+            latitude={state.values.latitude ?? center?.latitude ?? 0}
+            longitude={state.values.longitude ?? center?.longitude ?? 0}
             isEditMode={isEditMode}
             setIsEditMode={setIsEditMode}
             onDragEnd={handleDragEnd}

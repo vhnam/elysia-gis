@@ -1,3 +1,5 @@
+import { Link } from '@tanstack/react-router';
+
 import { cn } from '@/utils/ui';
 
 import { Button } from '@/components/ui/button';
@@ -48,8 +50,10 @@ export const SignInForm = () => {
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      type="text"
-                      placeholder="Enter your email"
+                      type="email"
+                      placeholder="Enter your email…"
+                      autoComplete="email"
+                      inputMode="email"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />
@@ -61,12 +65,12 @@ export const SignInForm = () => {
                   <Field>
                     <div className="flex items-center">
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                      <a
-                        href="/auth/forgot-password"
+                      <Link
+                        to="/auth/forgot-password"
                         className="ml-auto text-sm underline-offset-4 hover:underline"
                       >
                         Forgot your password?
-                      </a>
+                      </Link>
                     </div>
                     <PasswordInput
                       id={field.name}
@@ -75,14 +79,20 @@ export const SignInForm = () => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       required
+                      autoComplete="current-password"
+                      inputMode="text"
                     />
                     <FieldError errors={field.state.meta.errors} />
                   </Field>
                 )}
               </form.Field>
               <Field>
-                <Button type="submit" disabled={form.state.isSubmitting}>
-                  {form.state.isSubmitting ? 'Signing in...' : 'Sign In'}
+                <Button
+                  type="submit"
+                  disabled={form.state.isSubmitting}
+                  aria-live="polite"
+                >
+                  {form.state.isSubmitting ? 'Signing in…' : 'Sign In'}
                 </Button>
               </Field>
             </FieldGroup>

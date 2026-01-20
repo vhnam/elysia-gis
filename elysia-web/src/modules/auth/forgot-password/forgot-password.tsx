@@ -68,7 +68,9 @@ export const ForgotPasswordForm = () => {
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder="Enter your email…"
+                      autoComplete="email"
+                      inputMode="email"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />
@@ -76,8 +78,12 @@ export const ForgotPasswordForm = () => {
                 )}
               </form.Field>
               <Field>
-                <Button type="submit" disabled={form.state.isSubmitting}>
-                  {form.state.isSubmitting ? 'Sending email...' : 'Confirm'}
+                <Button
+                  type="submit"
+                  disabled={form.state.isSubmitting}
+                  aria-live="polite"
+                >
+                  {form.state.isSubmitting ? 'Sending email…' : 'Confirm'}
                 </Button>
               </Field>
             </FieldGroup>

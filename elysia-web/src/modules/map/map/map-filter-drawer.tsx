@@ -201,7 +201,10 @@ export const MapFilterDrawer = () => {
           <Button variant="default" className="w-full">
             Apply Filters
             {hasActiveFilters && (
-              <Badge className="bg-white text-primary ml-2">
+              <Badge
+                className="bg-white text-primary ml-2"
+                aria-label={`${totalActiveFilters} active filters`}
+              >
                 {totalActiveFilters}
               </Badge>
             )}

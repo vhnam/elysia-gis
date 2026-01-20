@@ -24,7 +24,9 @@ export const MapSearch = () => {
         </InputGroupAddon>
         <InputGroupInput
           className="w-40 md:w-60"
-          placeholder="Search by area..."
+          placeholder="Search by area…"
+          type="search"
+          autoComplete="off"
         />
         <InputGroupAddon align="inline-end">
           <MapFilterDrawer />

@@ -5,6 +5,7 @@
   "singleQuote": true,
   "trailingComma": "all",
   "importOrder": [
+    "^@/config/(.*)$",
     "^@/hooks/(.*)$",
     "^@/lib/(.*)$",
     "^@/utils/(.*)$",

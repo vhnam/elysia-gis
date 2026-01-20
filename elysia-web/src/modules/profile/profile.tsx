@@ -20,9 +20,7 @@ export function Profile() {
         <Card>
           <CardHeader>
             <CardTitle>Profile</CardTitle>
-            <CardDescription>
-              Loading your profile information...
-            </CardDescription>
+            <CardDescription>Loading your profile information…</CardDescription>
           </CardHeader>
         </Card>
       </div>

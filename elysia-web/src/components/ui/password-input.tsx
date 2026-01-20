@@ -10,9 +10,14 @@ import {
 } from './input-group';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
-type PasswordInputProps = Omit<ComponentProps<'input'>, 'type'>;
+interface PasswordInputProps extends Omit<ComponentProps<'input'>, 'type'> {
+  autoComplete?: string;
+}
 
-const PasswordInput = ({ ...props }: PasswordInputProps) => {
+const PasswordInput = ({
+  autoComplete = 'current-password',
+  ...props
+}: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -22,8 +27,10 @@ const PasswordInput = ({ ...props }: PasswordInputProps) => {
   return (
     <InputGroup>
       <InputGroupInput
-        placeholder="Enter password"
+        placeholder="Enter password…"
         type={showPassword ? 'text' : 'password'}
+        spellCheck={false}
+        autoComplete={autoComplete}
         {...props}
       />
       <InputGroupAddon align="inline-end">
@@ -32,7 +39,7 @@ const PasswordInput = ({ ...props }: PasswordInputProps) => {
             render={
               <InputGroupButton
                 variant="ghost"
-                aria-label="Info"
+                aria-label="Toggle password visibility"
                 size="icon-xs"
                 onClick={handleShowPassword}
               >

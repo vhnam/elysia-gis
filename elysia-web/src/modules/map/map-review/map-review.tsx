@@ -5,7 +5,7 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import maplibregl, { type Map, Marker } from 'maplibre-gl';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { cn } from '@/utils/ui';
 
@@ -30,8 +30,6 @@ export const MapReview = ({
   const mapReviewRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<Map>(null);
   const markerRef = useRef<Marker>(null);
-
-  const [zoom, setZoom] = useState(15);
 
   useEffect(() => {
     if (mapReviewRef.current && !mapInstanceRef.current) {
@@ -81,7 +79,7 @@ export const MapReview = ({
           lng: longitude,
           lat: latitude,
         },
-        zoom,
+        zoom: 15,
         attributionControl: false,
       });
 
@@ -122,23 +120,25 @@ export const MapReview = ({
   }, [latitude, longitude]);
 
   const handleZoomIn = () => {
-    if (mapInstanceRef.current && zoom < 20) {
-      const zoomLevel = zoom + 1;
-      setZoom(zoomLevel);
-      mapInstanceRef.current.zoomTo(zoomLevel);
+    const currentZoom = mapInstanceRef.current?.getZoom() ?? 0;
+    if (mapInstanceRef.current && currentZoom < 20) {
+      mapInstanceRef.current.zoomTo(currentZoom + 1);
     }
   };
 
   const handleZoomOut = () => {
-    if (mapInstanceRef.current && zoom > 0) {
-      const zoomLevel = zoom - 1;
-      setZoom(zoomLevel);
-      mapInstanceRef.current.zoomTo(zoomLevel);
+    const currentZoom = mapInstanceRef.current?.getZoom() ?? 0;
+    if (mapInstanceRef.current && currentZoom > 0) {
+      mapInstanceRef.current.zoomTo(currentZoom - 1);
     }
   };
 
   return (
-    <div className="relative ![&_.maplibregl-interactive]:cursor-default">
+    <div
+      className="relative ![&_.maplibregl-interactive]:cursor-default"
+      role="application"
+      aria-label="Map review"
+    >
       <div
         ref={mapReviewRef}
         className={cn('w-full border border-input rounded-md', {
@@ -149,16 +149,30 @@ export const MapReview = ({
       {isEditMode ? (
         <>
           <div className="absolute top-[calc(50%-16px)] left-[calc(50%-16px)] flex items-center justify-center">
-            <IconMapPinFilled className="text-red-500" size={32} />
+            <IconMapPinFilled
+              className="text-red-500"
+              size={32}
+              aria-hidden="true"
+            />
           </div>
           <ButtonGroup
             orientation="vertical"
             className="absolute bottom-4 right-4"
           >
-            <Button variant="outline" size="icon-sm" onClick={handleZoomIn}>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={handleZoomIn}
+              aria-label="Zoom in"
+            >
               <IconPlus />
             </Button>
-            <Button variant="outline" size="icon-sm" onClick={handleZoomOut}>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={handleZoomOut}
+              aria-label="Zoom out"
+            >
               <IconMinus />
             </Button>
           </ButtonGroup>
@@ -169,6 +183,7 @@ export const MapReview = ({
           type="button"
           className="absolute bottom-2 left-2"
           onClick={() => setIsEditMode(true)}
+          aria-label="Edit map location"
         >
           <IconMapPinSearch size={16} />
           Edit map location

@@ -19,11 +19,20 @@ export const MapControls = () => {
   const { onZoomIn, onZoomOut, onFullscreen, onCurrentLocation } = useMap();
 
   return (
-    <div className="absolute bottom-12 right-2 z-10 flex flex-col gap-2">
+    <div
+      className="absolute bottom-12 right-2 z-10 flex flex-col gap-2"
+      role="group"
+      aria-label="Map controls"
+    >
       <Tooltip>
         <TooltipTrigger
           render={
-            <Button variant="outline" size="icon-sm" onClick={onFullscreen}>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              onClick={onFullscreen}
+              aria-label="Fullscreen"
+            >
               <IconArrowsMaximize />
             </Button>
           }
@@ -40,6 +49,7 @@ export const MapControls = () => {
               variant="outline"
               size="icon-sm"
               onClick={onCurrentLocation}
+              aria-label="Get current location"
             >
               <IconCurrentLocation />
             </Button>
@@ -54,7 +64,12 @@ export const MapControls = () => {
         <Tooltip>
           <TooltipTrigger
             render={
-              <Button variant="outline" size="icon-sm" onClick={onZoomIn}>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                onClick={onZoomIn}
+                aria-label="Zoom in"
+              >
                 <IconPlus />
               </Button>
             }
@@ -67,7 +82,12 @@ export const MapControls = () => {
         <Tooltip>
           <TooltipTrigger
             render={
-              <Button variant="outline" size="icon-sm" onClick={onZoomOut}>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                onClick={onZoomOut}
+                aria-label="Zoom out"
+              >
                 <IconMinus />
               </Button>
             }

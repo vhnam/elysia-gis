@@ -51,7 +51,9 @@ export const ResetPasswordForm = () => {
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      placeholder="Enter your new password"
+                      placeholder="Enter your new password…"
+                      autoComplete="new-password"
+                      inputMode="text"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />
@@ -70,7 +72,9 @@ export const ResetPasswordForm = () => {
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
                       onBlur={field.handleBlur}
-                      placeholder="Confirm your new password"
+                      placeholder="Confirm your new password…"
+                      autoComplete="new-password"
+                      inputMode="text"
                       required
                     />
                     <FieldError errors={field.state.meta.errors} />
@@ -78,8 +82,12 @@ export const ResetPasswordForm = () => {
                 )}
               </form.Field>
               <Field>
-                <Button type="submit" disabled={form.state.isSubmitting}>
-                  {form.state.isSubmitting ? 'Resetting password...' : 'Reset'}
+                <Button
+                  type="submit"
+                  disabled={form.state.isSubmitting}
+                  aria-live="polite"
+                >
+                  {form.state.isSubmitting ? 'Resetting password…' : 'Reset'}
                 </Button>
               </Field>
             </FieldGroup>
