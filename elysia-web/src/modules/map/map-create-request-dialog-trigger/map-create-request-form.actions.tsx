@@ -1,17 +1,19 @@
 import { useForm } from '@tanstack/react-form';
 
-import { mapCreateRequestSchema } from '@/schemas/map.schema';
+import {
+  type MapCreateRequestForm,
+  mapCreateRequestSchema,
+} from '@/schemas/map.schema';
 
-export const useMapCreateRequestActions = () => {
+interface UseMapCreateRequestActionsProps {
+  defaultValues: MapCreateRequestForm;
+}
+
+export const useMapCreateRequestActions = ({
+  defaultValues,
+}: UseMapCreateRequestActionsProps) => {
   const form = useForm({
-    defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-      address: '',
-      requestType: '',
-      description: '',
-    },
+    defaultValues,
     validators: {
       onSubmit: mapCreateRequestSchema,
     },

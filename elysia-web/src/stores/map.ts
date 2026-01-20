@@ -1,15 +1,15 @@
-import type { Map } from 'maplibre-gl';
+import { Map } from 'maplibre-gl';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 type MapState = {
-  zoom: number;
   mapInstance: Map | null;
+  zoom: number;
 };
 
 type MapActions = {
-  setZoom: (zoom: number) => void;
   setMapInstance: (map: Map | null) => void;
+  setZoom: (zoom: number) => void;
 };
 
 export type MapStore = MapState & MapActions;
@@ -23,8 +23,8 @@ const useMapStore = create<MapStore>()(
   persist(
     (set) => ({
       ...initialState,
-      setZoom: (zoom: number) => set({ zoom }),
       setMapInstance: (map: Map | null) => set({ mapInstance: map }),
+      setZoom: (zoom: number) => set({ zoom }),
     }),
     {
       name: 'map-store',

@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useGeolocation } from '@/hooks/use-geolocation';
 
 import useMapStore from '@/stores/map';
@@ -5,6 +7,13 @@ import useMapStore from '@/stores/map';
 export const useMap = () => {
   const { zoom, mapInstance, setZoom } = useMapStore();
   const { getCurrentLocation } = useGeolocation();
+
+  const center = useMemo(() => {
+    return {
+      latitude: mapInstance?.getCenter().lat,
+      longitude: mapInstance?.getCenter().lng,
+    };
+  }, [mapInstance]);
 
   const handleCurrentLocation = async () => {
     if (!mapInstance) {
@@ -56,6 +65,7 @@ export const useMap = () => {
   };
 
   return {
+    center,
     mapInstance,
     zoom,
     onFullscreen: handleFullscreen,

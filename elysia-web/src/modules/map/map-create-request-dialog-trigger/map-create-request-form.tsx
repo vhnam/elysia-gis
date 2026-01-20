@@ -1,3 +1,9 @@
+import { Activity, useEffect, useState } from 'react';
+
+import { useMap } from '@/hooks/use-map';
+
+import { type RequestType } from '@/schemas/map.schema';
+
 import { Button } from '@/components/ui/button';
 import { DialogClose } from '@/components/ui/dialog';
 import {
@@ -17,7 +23,8 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-import { useMapCreateRequestActions } from './map-create-request-form.actions';
+import { useMapCreateRequestActions } from '@/modules/map/map-create-request-dialog-trigger';
+import { MapReview } from '@/modules/map/map-review';
 
 const requestTypeOptions = [
   { value: 'people', label: 'People Rescue' },
@@ -29,142 +36,239 @@ const requestTypeOptions = [
 ];
 
 export const MapCreateRequestForm = () => {
-  const { form } = useMapCreateRequestActions();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [hasUserSetLocation, setHasUserSetLocation] = useState(false);
+
+  const { center } = useMap();
+
+  const { form } = useMapCreateRequestActions({
+    defaultValues: {
+      name: '',
+      email: undefined,
+      phone: '',
+      address: undefined,
+      requestType: 'food',
+      description: undefined,
+      latitude: center?.latitude ?? 0,
+      longitude: center?.longitude ?? 0,
+    },
+  });
+
+  useEffect(() => {
+    if (center && !hasUserSetLocation) {
+      const lat = center.latitude ?? 0;
+      const lng = center.longitude ?? 0;
+      if (lat !== 0 && lng !== 0) {
+        form.setFieldValue('latitude', lat);
+        form.setFieldValue('longitude', lng);
+      }
+    }
+  }, [center, form, hasUserSetLocation]);
+
+  const handleDragEnd = (latitude: number, longitude: number) => {
+    form.setFieldValue('latitude', latitude);
+    form.setFieldValue('longitude', longitude);
+    setHasUserSetLocation(true);
+  };
+
+  const handleCancelEditMode = () => {
+    if (center) {
+      const lat = center.latitude ?? 0;
+      const lng = center.longitude ?? 0;
+      form.setFieldValue('latitude', lat);
+      form.setFieldValue('longitude', lng);
+    }
+    setHasUserSetLocation(false);
+    setIsEditMode(false);
+  };
 
   return (
-    <form
-      className="relative"
-      onSubmit={(e) => {
-        e.preventDefault();
-        form.handleSubmit();
-      }}
-    >
-      <FieldGroup className="mb-12 no-scrollbar max-h-[70vh] overflow-y-auto">
-        <form.Field name="name">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Name</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                type="text"
-                placeholder="Enter your name"
-                required
-              />
-              <FieldError errors={field.state.meta.errors} />
-            </Field>
-          )}
-        </form.Field>
-        <form.Field name="email">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                type="text"
-                placeholder="Enter your email"
-                required
-              />
-              <FieldError errors={field.state.meta.errors} />
-            </Field>
-          )}
-        </form.Field>
-        <form.Field name="phone">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                type="text"
-                placeholder="Enter your phone"
-                required
-              />
-              <FieldError errors={field.state.meta.errors} />
-            </Field>
-          )}
-        </form.Field>
-        <form.Field name="address">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Address</FieldLabel>
-              <Textarea
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                placeholder="Enter your address"
-                required
-                className="resize-none"
-              />
-              <FieldError errors={field.state.meta.errors} />
-            </Field>
-          )}
-        </form.Field>
-        <form.Field name="requestType">
-          {(field) => (
-            <Field>
-              <FieldLabel>Request Type</FieldLabel>
-              <Select
-                items={requestTypeOptions}
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onValueChange={(value) => field.handleChange(value ?? '')}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a request type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {requestTypeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <FieldError errors={field.state.meta.errors} />
-            </Field>
-          )}
-        </form.Field>
-        <form.Field name="description">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Request Description</FieldLabel>
-              <Textarea
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                placeholder="Enter your request description"
-                required
-                className="resize-none"
-              />
-              <FieldError errors={field.state.meta.errors} />
-            </Field>
-          )}
-        </form.Field>
-      </FieldGroup>
-      <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-2 bg-background">
-        <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
-        <Button type="submit" disabled={form.state.isSubmitting}>
-          {form.state.isSubmitting ? 'Creating...' : 'Create'}
-        </Button>
-      </div>
-    </form>
+    <>
+      <Activity mode={isEditMode ? 'hidden' : 'visible'}>
+        <form
+          className="relative"
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit();
+          }}
+        >
+          <FieldGroup className="mb-12 no-scrollbar h-[70vh] overflow-y-auto">
+            <form.Field name="name">
+              {(field) => (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    type="text"
+                    placeholder="Enter your name"
+                    required
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+            <form.Field name="email">
+              {(field) => (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>
+                    Email{' '}
+                    <span className="text-xs text-muted-foreground">
+                      (optional)
+                    </span>
+                  </FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    type="text"
+                    placeholder="Enter your email"
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+            <form.Field name="phone">
+              {(field) => (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    type="text"
+                    placeholder="Enter your phone"
+                    required
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+            <form.Field name="address">
+              {(field) => (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>
+                    Address{' '}
+                    <span className="text-xs text-muted-foreground">
+                      (optional)
+                    </span>
+                  </FieldLabel>
+                  <Textarea
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    placeholder="Enter your address"
+                    className="resize-none"
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+            <form.Field name="requestType">
+              {(field) => (
+                <Field>
+                  <FieldLabel>Request Type</FieldLabel>
+                  <Select
+                    items={requestTypeOptions}
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onValueChange={(value) =>
+                      field.handleChange(value as RequestType)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a request type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {requestTypeOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+            <form.Field name="description">
+              {(field) => (
+                <Field>
+                  <FieldLabel htmlFor={field.name}>
+                    Description{' '}
+                    <span className="text-xs text-muted-foreground">
+                      (optional)
+                    </span>
+                  </FieldLabel>
+                  <Textarea
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    placeholder="Enter your request description"
+                    className="resize-none"
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+            <MapReview
+              latitude={form.state.values.latitude ?? center?.latitude ?? 0}
+              longitude={form.state.values.longitude ?? center?.longitude ?? 0}
+              isEditMode={isEditMode}
+              setIsEditMode={setIsEditMode}
+            />
+          </FieldGroup>
+          <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-2 bg-background">
+            <DialogClose render={<Button variant="outline" />}>
+              Cancel
+            </DialogClose>
+            <Button type="submit" disabled={form.state.isSubmitting}>
+              {form.state.isSubmitting ? 'Creating...' : 'Create'}
+            </Button>
+          </div>
+        </form>
+      </Activity>
+      <Activity mode={isEditMode ? 'visible' : 'hidden'}>
+        <div className="relative">
+          <MapReview
+            latitude={form.state.values.latitude ?? center?.latitude ?? 0}
+            longitude={form.state.values.longitude ?? center?.longitude ?? 0}
+            isEditMode={isEditMode}
+            setIsEditMode={setIsEditMode}
+            onDragEnd={handleDragEnd}
+          />
+          <div className="absolute bottom-0 left-0 right-0 flex justify-end gap-2 bg-background">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={handleCancelEditMode}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="default"
+              type="button"
+              onClick={() => setIsEditMode(false)}
+            >
+              Save
+            </Button>
+          </div>
+        </div>
+      </Activity>
+    </>
   );
 };
