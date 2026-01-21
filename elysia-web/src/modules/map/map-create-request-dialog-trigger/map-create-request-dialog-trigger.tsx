@@ -1,5 +1,7 @@
 import { IconSos } from '@tabler/icons-react';
 
+import { cn } from '@/utils/ui';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,7 +21,10 @@ export const MapCreateRequestDialogTrigger = () => {
         render={
           <Button
             variant="destructive"
-            className="absolute bottom-2 left-2 md:top-3 md:right-16 md:bottom-[unset] md:left-[unset] z-10 bg-destructive text-destructive-foreground space-x-2"
+            className={cn(
+              'absolute bottom-2 left-2 md:top-2 md:left-80 md:bottom-[unset] z-10',
+              'bg-destructive text-destructive-foreground space-x-2',
+            )}
           >
             <IconSos className="hidden md:block" />
             Create Request

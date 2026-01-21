@@ -2,10 +2,11 @@ import { Elysia } from 'elysia';
 
 import { env } from '@/config/env';
 
-import { openapiHandler } from '@/utils/openapi';
+// import { openapiHandler } from '@/utils/openapi';
 
 import { authController } from '@/modules/auth';
 import { healthController } from '@/modules/health';
+import { rescueRequestController } from '@/modules/rescue-request';
 import { userController } from '@/modules/user';
 
 import { authMiddleware, corsMiddleware, errorMiddleware } from '@/middleware';
@@ -21,11 +22,12 @@ const app = new Elysia()
   .use(healthController)
   .use(authController)
   .use(userController)
+  .use(rescueRequestController)
 
   // 3. Auth middleware (better-auth handler) - mount after custom routes
   .use(authMiddleware)
 
-  .use(openapiHandler)
+  // .use(openapiHandler)
 
   // 3. Catch-all 404
   .all('*', ({ set }) => {

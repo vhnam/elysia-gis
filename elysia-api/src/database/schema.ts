@@ -23,3 +23,5 @@ export {
   administrativeUnitMappingSchema,
   administrativeUnitMappingRelations,
 } from '@/modules/administrative-unit-mapping';
+
+export { rescueRequestSchema, requestTypeEnum } from '@/modules/rescue-request';

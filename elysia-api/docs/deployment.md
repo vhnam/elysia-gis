@@ -92,4 +92,3 @@ For horizontal scaling:
 2. Ensure session/JWT tokens are stateless (already implemented)
 3. Use a shared database
 4. Consider using Redis for rate limiting or caching if needed
-

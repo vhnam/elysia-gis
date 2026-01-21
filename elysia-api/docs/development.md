@@ -106,9 +106,9 @@ The development server automatically reloads when you make changes to the code. 
 ## Debugging
 
 Check the console output for:
+
 - Server startup messages
 - Request logs
 - Error messages
 
 For more detailed logging, check the logger configuration in `src/utils/logger.ts`.
-

@@ -52,4 +52,3 @@ By default, JWT tokens expire after 7 days. This can be configured via the `JWT_
 4. Password is updated and token is invalidated
 
 See [Email Configuration](./email.md) for email setup.
-

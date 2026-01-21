@@ -3,7 +3,14 @@ import {
   ListObjectsV2Command,
   S3Client,
 } from '@aws-sdk/client-s3';
-import { mkdirSync, readdirSync, rmSync, statSync, unlinkSync, writeFileSync } from 'fs';
+import {
+  mkdirSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  unlinkSync,
+  writeFileSync,
+} from 'fs';
 import { dirname, join } from 'path';
 
 const S3 = new S3Client({
@@ -96,10 +103,10 @@ async function main() {
 
     const filePath = join(dataDir, key);
     const fileDir = dirname(filePath);
-    
+
     // Ensure directory exists before writing
     mkdirSync(fileDir, { recursive: true });
-    
+
     console.log(`💾 Writing to ${filePath}...`);
     writeFileSync(filePath, Buffer.from(data).toString('utf-8'));
   }

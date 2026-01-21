@@ -7,6 +7,7 @@
 **Solutions:**
 
 1. Ensure PostgreSQL is running:
+
    ```bash
    pg_isready
    ```
@@ -14,11 +15,13 @@
 2. Check your connection string matches your `.env` configuration
 
 3. Verify database exists:
+
    ```bash
    psql -U postgres -l
    ```
 
 4. Create database if needed:
+
    ```bash
    createdb elysia-gis
    ```
@@ -106,12 +109,14 @@
 **Solutions:**
 
 1. Clear node_modules and reinstall:
+
    ```bash
    rm -rf node_modules bun.lock
    pnpm install
    ```
 
 2. Check Bun version (requires Bun v1.0+):
+
    ```bash
    bun --version
    ```
@@ -124,4 +129,3 @@
 2. Review the [Development Guide](./development.md)
 3. Check [Environment Variables](./environment-variables.md) are set correctly
 4. Review the [Architecture Patterns](./development.md#architecture-patterns) section
-

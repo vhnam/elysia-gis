@@ -72,8 +72,8 @@ This opens a web interface at `http://localhost:4983` where you can browse and e
 ## Schema Location
 
 Database schemas are defined in:
+
 - `src/modules/user/user.table.ts` - User table schema
 - `src/modules/auth/auth.table.ts` - Auth-related tables (reset tokens, etc.)
 
 All schemas are exported from `src/database/schema.ts`.
-

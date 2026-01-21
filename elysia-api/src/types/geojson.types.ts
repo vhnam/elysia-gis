@@ -32,85 +32,85 @@ export interface MultiPolygonGeometry {
 export type Geometry = MultiPolygonGeometry; // Can be extended with other geometry types if needed
 
 // ============================================================================
-// VN-63 Dataset (Simpler structure)
+// Administrative Unit Legacy Dataset (Simpler structure)
 // ============================================================================
 
 /**
- * Province properties for VN-63 dataset
+ * Province properties for Administrative Unit Legacy dataset
  */
 export interface AdministrativeUnitLegacyProvinceProperties {
-  ma_tinh: string;      // Province code
-  ten_tinh: string;     // Province name
-  loai: string;         // Type (e.g., "Tỉnh", "Thành phố")
-  cap: number;          // Administrative level
-  stt: number;          // Order/sequence number
+  ma_tinh: string; // Province code
+  ten_tinh: string; // Province name
+  loai: string; // Type (e.g., "Tỉnh", "Thành phố")
+  cap: number; // Administrative level
+  stt: number; // Order/sequence number
 }
 
 /**
- * District properties for VN-63 dataset
+ * District properties for Administrative Unit Legacy dataset
  */
 export interface AdministrativeUnitLegacyDistrictProperties {
-  ma_huyen: string;     // District code
-  ten_huyen: string;    // District name
-  loai: string;         // Type (e.g., "Huyện", "Thành phố", "Quận")
-  cap: number;          // Administrative level
-  stt: number;          // Order/sequence number
-  ma_tinh: string;      // Province code
-  ten_tinh: string;     // Province name
+  ma_huyen: string; // District code
+  ten_huyen: string; // District name
+  loai: string; // Type (e.g., "Huyện", "Thành phố", "Quận")
+  cap: number; // Administrative level
+  stt: number; // Order/sequence number
+  ma_tinh: string; // Province code
+  ten_tinh: string; // Province name
 }
 
 /**
- * Ward properties for VN-63 dataset
+ * Ward properties for Administrative Unit Legacy dataset
  */
 export interface AdministrativeUnitLegacyWardProperties {
-  ma_xa: string;        // Ward code
-  ten_xa: string;       // Ward name
-  loai: string;         // Type (e.g., "Xã", "Phường", "Thị trấn")
-  cap: number;          // Administrative level
-  stt: number;          // Order/sequence number
-  ma_huyen: string;     // District code
-  ten_huyen: string;    // District name
-  ma_tinh: string;      // Province code
-  ten_tinh: string;     // Province name
+  ma_xa: string; // Ward code
+  ten_xa: string; // Ward name
+  loai: string; // Type (e.g., "Xã", "Phường", "Thị trấn")
+  cap: number; // Administrative level
+  stt: number; // Order/sequence number
+  ma_huyen: string; // District code
+  ten_huyen: string; // District name
+  ma_tinh: string; // Province code
+  ten_tinh: string; // Province name
 }
 
 // ============================================================================
-// VN-34 Dataset (More detailed with demographic data)
+// Administrative Unit Dataset (More detailed with demographic data)
 // ============================================================================
 
 /**
- * Province properties for VN-34 dataset (with demographic data)
+ * Province properties for Administrative Unit dataset (with demographic data)
  */
 export interface AdministrativeUnitProvinceProperties {
-  ma_tinh: string;      // Province code
-  ten_tinh: string;     // Province name
-  sap_nhap: string;     // Merger information
-  quy_mo: string;       // Scale/size description
-  tru_so: string;       // Headquarters address
-  loai: string;         // Type (e.g., "Tỉnh", "Thành phố")
-  cap: number;          // Administrative level
-  stt: number;          // Order/sequence number
-  dtich_km2: number;    // Area in km²
-  dan_so: number;       // Population
-  matdo_km2: number;    // Population density per km²
+  ma_tinh: string; // Province code
+  ten_tinh: string; // Province name
+  sap_nhap: string; // Merger information
+  quy_mo: string; // Scale/size description
+  tru_so: string; // Headquarters address
+  loai: string; // Type (e.g., "Tỉnh", "Thành phố")
+  cap: number; // Administrative level
+  stt: number; // Order/sequence number
+  dtich_km2: number; // Area in km²
+  dan_so: number; // Population
+  matdo_km2: number; // Population density per km²
 }
 
 /**
- * Ward properties for VN-34 dataset (with demographic data)
+ * Ward properties for Administrative Unit dataset (with demographic data)
  */
 export interface AdministrativeUnitWardProperties {
-  ma_xa: string;        // Ward code
-  ten_xa: string;       // Ward name
-  sap_nhap: string;     // Merger information
-  tru_so: string;       // Headquarters address
-  loai: string;         // Type (e.g., "Xã", "Phường", "Thị trấn")
-  cap: number;          // Administrative level
-  stt: number;          // Order/sequence number
-  dtich_km2: number;    // Area in km²
-  dan_so: number;       // Population
-  matdo_km2: number;    // Population density per km²
-  ma_tinh: string;      // Province code
-  ten_tinh: string;     // Province name
+  ma_xa: string; // Ward code
+  ten_xa: string; // Ward name
+  sap_nhap: string; // Merger information
+  tru_so: string; // Headquarters address
+  loai: string; // Type (e.g., "Xã", "Phường", "Thị trấn")
+  cap: number; // Administrative level
+  stt: number; // Order/sequence number
+  dtich_km2: number; // Area in km²
+  dan_so: number; // Population
+  matdo_km2: number; // Population density per km²
+  ma_tinh: string; // Province code
+  ten_tinh: string; // Province name
 }
 
 // ============================================================================
@@ -140,29 +140,34 @@ export interface GeoJSONFeatureCollection<P = Record<string, any>> {
 // ============================================================================
 
 /**
- * VN-63 Province FeatureCollection
+ * Administrative Unit Legacy Province FeatureCollection
  */
-export type AdministrativeUnitLegacyProvinceFeatureCollection = GeoJSONFeatureCollection<AdministrativeUnitLegacyProvinceProperties>;
+export type AdministrativeUnitLegacyProvinceFeatureCollection =
+  GeoJSONFeatureCollection<AdministrativeUnitLegacyProvinceProperties>;
 
 /**
- * VN-63 District FeatureCollection
+ * Administrative Unit Legacy District FeatureCollection
  */
-export type AdministrativeUnitLegacyDistrictFeatureCollection = GeoJSONFeatureCollection<AdministrativeUnitLegacyDistrictProperties>;
+export type AdministrativeUnitLegacyDistrictFeatureCollection =
+  GeoJSONFeatureCollection<AdministrativeUnitLegacyDistrictProperties>;
 
 /**
- * VN-63 Ward FeatureCollection
+ * Administrative Unit Legacy Ward FeatureCollection
  */
-export type AdministrativeUnitLegacyWardFeatureCollection = GeoJSONFeatureCollection<AdministrativeUnitLegacyWardProperties>;
+export type AdministrativeUnitLegacyWardFeatureCollection =
+  GeoJSONFeatureCollection<AdministrativeUnitLegacyWardProperties>;
 
 /**
- * VN-34 Province FeatureCollection
+ * Administrative Unit Province FeatureCollection
  */
-export type AdministrativeUnitProvinceFeatureCollection = GeoJSONFeatureCollection<AdministrativeUnitProvinceProperties>;
+export type AdministrativeUnitProvinceFeatureCollection =
+  GeoJSONFeatureCollection<AdministrativeUnitProvinceProperties>;
 
 /**
- * VN-34 Ward FeatureCollection
+ * Administrative Unit Ward FeatureCollection
  */
-export type AdministrativeUnitWardFeatureCollection = GeoJSONFeatureCollection<AdministrativeUnitWardProperties>;
+export type AdministrativeUnitWardFeatureCollection =
+  GeoJSONFeatureCollection<AdministrativeUnitWardProperties>;
 
 // ============================================================================
 // Union Types for All Datasets
@@ -171,7 +176,9 @@ export type AdministrativeUnitWardFeatureCollection = GeoJSONFeatureCollection<A
 /**
  * All province properties
  */
-export type ProvinceProperties = AdministrativeUnitLegacyProvinceProperties | AdministrativeUnitProvinceProperties;
+export type ProvinceProperties =
+  | AdministrativeUnitLegacyProvinceProperties
+  | AdministrativeUnitProvinceProperties;
 
 /**
  * All district properties
@@ -181,7 +188,9 @@ export type DistrictProperties = AdministrativeUnitLegacyDistrictProperties;
 /**
  * All ward properties
  */
-export type WardProperties = AdministrativeUnitLegacyWardProperties | AdministrativeUnitWardProperties;
+export type WardProperties =
+  | AdministrativeUnitLegacyWardProperties
+  | AdministrativeUnitWardProperties;
 
 /**
  * All administrative properties

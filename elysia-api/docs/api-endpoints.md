@@ -11,6 +11,7 @@ All API endpoints are prefixed with `/api/v1`.
 Returns server status and timestamp.
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -25,6 +26,7 @@ Returns server status and timestamp.
 Sign in with username and password.
 
 **Request:**
+
 ```json
 {
   "username": "string",
@@ -33,6 +35,7 @@ Sign in with username and password.
 ```
 
 **Response:**
+
 ```json
 {
   "username": "string",
@@ -48,6 +51,7 @@ Sign in with username and password.
 Request a password reset email.
 
 **Request:**
+
 ```json
 {
   "email": "user@example.com"
@@ -55,6 +59,7 @@ Request a password reset email.
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Password reset email sent"
@@ -68,6 +73,7 @@ Sends a password reset email to the user with a reset token.
 Reset password using token from email.
 
 **Request:**
+
 ```json
 {
   "token": "reset_token_from_email",
@@ -76,6 +82,7 @@ Reset password using token from email.
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Password reset successfully"
@@ -95,11 +102,13 @@ Authorization: Bearer <your_jwt_token>
 List users with pagination and search.
 
 **Query Parameters:**
+
 - `page` (optional): Page number (default: 1)
 - `limit` (optional): Items per page (default: 10, max: 100)
 - `search` (optional): Search term for username
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -122,6 +131,7 @@ List users with pagination and search.
 Create a new user.
 
 **Request:**
+
 ```json
 {
   "username": "string",
@@ -131,6 +141,7 @@ Create a new user.
 ```
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -145,6 +156,7 @@ Create a new user.
 Get user by ID.
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -159,6 +171,7 @@ Get user by ID.
 Get current authenticated user.
 
 **Response:**
+
 ```json
 {
   "id": "string",
@@ -182,6 +195,7 @@ All errors follow this format:
 ```
 
 Common status codes:
+
 - `400` - Bad Request / Validation Error
 - `401` - Unauthorized
 - `404` - Not Found
@@ -194,4 +208,3 @@ For interactive API documentation, visit:
 ```
 http://localhost:4000/openapi
 ```
-

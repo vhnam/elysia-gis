@@ -54,3 +54,29 @@ export const multiPolygon = customType<{
     return value as unknown as GeoJSON.MultiPolygon;
   },
 });
+
+/**
+ * Custom PostGIS Point geometry type for storing coordinates
+ * Stores GeoJSON Point as PostGIS geometry with SRID 4326 (WGS84)
+ */
+export const point = customType<{
+  data: GeoJSON.Point;
+  driverData: string;
+}>({
+  dataType() {
+    return 'geometry(Point, 4326)';
+  },
+  toDriver(value: GeoJSON.Point): string {
+    return `ST_GeomFromGeoJSON('${JSON.stringify(value)}')`;
+  },
+  fromDriver(value: string): GeoJSON.Point {
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return value as unknown as GeoJSON.Point;
+      }
+    }
+    return value as unknown as GeoJSON.Point;
+  },
+});

@@ -67,6 +67,7 @@ This starts a local email preview server at `http://localhost:4100` where you ca
 
 ```tsx
 import { render } from '@react-email/render';
+
 import YourEmailTemplate from '@/emails/your-template';
 
 const html = await render(YourEmailTemplate({ props }));
@@ -81,4 +82,3 @@ const html = await render(YourEmailTemplate({ props }));
 3. For Gmail, ensure you're using an App Password
 4. Check server logs for detailed error messages
 5. Verify `FRONTEND_URL` is correctly set for email links
-
