@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useGeolocation } from '@/hooks/use-geolocation';
 
@@ -7,13 +7,34 @@ import useMapStore from '@/stores/map';
 export const useMap = () => {
   const { zoom, mapInstance, setZoom } = useMapStore();
   const { getCurrentLocation } = useGeolocation();
+  const [center, setCenter] = useState({ latitude: 0, longitude: 0 });
 
-  const center = useMemo(() => {
-    return {
-      latitude: mapInstance?.getCenter().lat ?? 0,
-      longitude: mapInstance?.getCenter().lng ?? 0,
+  // Update center when map moves
+  useEffect(() => {
+    if (!mapInstance) {
+      return;
+    }
+
+    const updateCenter = () => {
+      const mapCenter = mapInstance.getCenter();
+      setCenter({
+        latitude: mapCenter.lat,
+        longitude: mapCenter.lng,
+      });
     };
-  }, [mapInstance?.getCenter]);
+
+    // Set initial center
+    updateCenter();
+
+    // Listen to map move events
+    mapInstance.on('move', updateCenter);
+    mapInstance.on('moveend', updateCenter);
+
+    return () => {
+      mapInstance.off('move', updateCenter);
+      mapInstance.off('moveend', updateCenter);
+    };
+  }, [mapInstance]);
 
   const handleCurrentLocation = useCallback(async () => {
     if (!mapInstance) {
@@ -27,7 +48,11 @@ export const useMap = () => {
         zoom: 14,
       });
     } catch (error) {
-      console.error('Error getting current location:', error);
+      // Error is already logged by useGeolocation hook
+      // Silently fail - user can try again
+      if (import.meta.env.DEV) {
+        console.error('Error getting current location:', error);
+      }
     }
   }, [mapInstance, getCurrentLocation]);
 
@@ -59,7 +84,11 @@ export const useMap = () => {
 
     if (mapContainer) {
       mapContainer.requestFullscreen().catch((error) => {
-        console.error('Error attempting to enable fullscreen:', error);
+        // Fullscreen API errors are usually due to user interaction requirements
+        // Silently fail - user can try again
+        if (import.meta.env.DEV) {
+          console.error('Error attempting to enable fullscreen:', error);
+        }
       });
     }
   }, [mapInstance]);

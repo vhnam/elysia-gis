@@ -23,9 +23,8 @@ export const useSignInActions = () => {
     },
     onSubmit: async ({ value }) => {
       const response = await signInMutation.mutateAsync(value);
-      const { token, ...user } = response;
       setToken(response.token);
-      setUser(user.user);
+      setUser(response.user);
 
       startTransition(() => {
         router.navigate({ to: '/' });

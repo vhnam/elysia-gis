@@ -35,7 +35,11 @@ const requestTypeOptions = [
   { value: 'transportation', label: 'Transportation' },
 ];
 
-export const MapCreateRequestForm = () => {
+interface MapCreateRequestFormProps {
+  onSuccess?: () => void;
+}
+
+export const MapCreateRequestForm = ({ onSuccess }: MapCreateRequestFormProps) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [hasUserSetLocation, setHasUserSetLocation] = useState(false);
 
@@ -52,6 +56,7 @@ export const MapCreateRequestForm = () => {
       latitude: center?.latitude ?? 0,
       longitude: center?.longitude ?? 0,
     },
+    onSuccess,
   });
 
   const { handleSubmit, setFieldValue, Field: FormField, state } = form;

@@ -1,3 +1,4 @@
+import { Map } from 'maplibre-gl';
 import maplibregl from 'maplibre-gl';
 import { type PropsWithChildren, useEffect, useRef } from 'react';
 
@@ -11,15 +12,16 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 export const MapContainer = ({ children }: PropsWithChildren) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<Map | null>(null);
 
-  const { zoom, mapInstance } = useMap();
+  const { zoom } = useMap();
   const {
     mapInstance: mapInstanceFromStore,
     setMapInstance: setMapInstanceFromStore,
   } = useMapStore();
 
   useEffect(() => {
-    if (mapContainerRef.current && !mapInstance) {
+    if (mapContainerRef.current && !mapInstanceFromStore && !mapInstanceRef.current) {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: {
@@ -91,16 +93,20 @@ export const MapContainer = ({ children }: PropsWithChildren) => {
         });
       });
 
+      mapInstanceRef.current = map;
       setMapInstanceFromStore(map);
     }
 
     return () => {
-      if (mapInstanceFromStore) {
-        mapInstanceFromStore.remove();
+      const mapToCleanup = mapInstanceRef.current || mapInstanceFromStore;
+      if (mapToCleanup) {
+        mapToCleanup.remove();
+        mapInstanceRef.current = null;
         setMapInstanceFromStore(null);
       }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount, cleanup on unmount
 
   return (
     <div id="map-container" className="relative h-screen w-full">

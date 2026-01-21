@@ -1,4 +1,5 @@
 import { IconSos } from '@tabler/icons-react';
+import { useState } from 'react';
 
 import { cn } from '@/utils/ui';
 
@@ -15,8 +16,10 @@ import {
 import { MapCreateRequestForm } from './map-create-request-form';
 
 export const MapCreateRequestDialogTrigger = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
           <Button
@@ -39,7 +42,7 @@ export const MapCreateRequestDialogTrigger = () => {
             of emergency.
           </DialogDescription>
         </DialogHeader>
-        <MapCreateRequestForm />
+        <MapCreateRequestForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );

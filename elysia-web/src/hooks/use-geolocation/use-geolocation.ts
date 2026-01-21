@@ -17,7 +17,10 @@ export const useGeolocation = () => {
           });
         },
         (error) => {
-          console.error('Error getting current location:', error);
+          // Log in dev mode only - error is passed to caller for handling
+          if (import.meta.env.DEV) {
+            console.error('Error getting current location:', error);
+          }
           reject(error);
         },
         {

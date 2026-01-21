@@ -2,6 +2,8 @@ import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router';
 import type { PropsWithChildren } from 'react';
 import { Toaster } from 'sonner';
 
+import { ErrorBoundary } from '@/components/app';
+
 import appCss from '@/styles.css?url';
 
 export const Route = createRootRoute({
@@ -38,8 +40,10 @@ function RootDocument({ children }: PropsWithChildren) {
         <HeadContent />
       </head>
       <body>
-        {children}
-        <Toaster />
+        <ErrorBoundary>
+          {children}
+          <Toaster />
+        </ErrorBoundary>
         <Scripts />
       </body>
     </html>
