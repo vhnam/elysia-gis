@@ -72,14 +72,39 @@ export abstract class RescueRequestService {
    * @returns Array of rescue requests with longitude/latitude extracted
    */
   static async getAllRequests() {
-    const requests = await db.select().from(rescueRequestSchema);
+    const results = await db.execute<{
+      id: string;
+      name: string;
+      email: string | null;
+      phone: string;
+      address: string | null;
+      request_type: string;
+      description: string | null;
+      location: GeoJSON.Point; // GeoJSON object from ST_AsGeoJSON
+      created_at: Date;
+      updated_at: Date;
+    }>(sql`
+      SELECT 
+        id, name, email, phone, address,
+        request_type, description,
+        ST_AsGeoJSON(location)::json as location,
+        created_at, updated_at
+      FROM "rescue_request"
+      ORDER BY created_at DESC
+    `);
 
-    return requests.map((request) => {
-      const { longitude, latitude } = pointToCoordinates(
-        request.location as GeoJSON.Point,
-      );
+    return results.map((request) => {
+      const { longitude, latitude } = pointToCoordinates(request.location);
       return {
-        ...request,
+        id: request.id,
+        name: request.name,
+        email: request.email,
+        phone: request.phone,
+        address: request.address,
+        requestType: request.request_type as any,
+        description: request.description,
+        createdAt: request.created_at,
+        updatedAt: request.updated_at,
         longitude,
         latitude,
       };

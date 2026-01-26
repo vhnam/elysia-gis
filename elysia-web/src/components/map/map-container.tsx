@@ -21,7 +21,11 @@ export const MapContainer = ({ children }: PropsWithChildren) => {
   } = useMapStore();
 
   useEffect(() => {
-    if (mapContainerRef.current && !mapInstanceFromStore && !mapInstanceRef.current) {
+    if (
+      mapContainerRef.current &&
+      !mapInstanceFromStore &&
+      !mapInstanceRef.current
+    ) {
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
         style: {
@@ -80,6 +84,19 @@ export const MapContainer = ({ children }: PropsWithChildren) => {
           bounds: [102.143914, 6.931062, 117.393262, 23.392643],
         });
 
+        map.addSource('rescue-requests-tiles', {
+          type: 'vector',
+          tiles: [
+            `${Config.MAP_TILES_URL}/public.rescue_request/{z}/{x}/{y}.pbf`,
+          ],
+          minzoom: 0,
+          maxzoom: 22,
+          bounds: [
+            106.69054412841797, 10.763429641723633, 107.99078369140625,
+            14.405580520629883,
+          ],
+        });
+
         map.addLayer({
           id: 'elysia-administrative-unit-provinces-tiles',
           source: 'elysia-administrative-unit-provinces-tiles',
@@ -89,6 +106,20 @@ export const MapContainer = ({ children }: PropsWithChildren) => {
             'fill-color': '#34a85a',
             'fill-opacity': 0.3,
             'fill-outline-color': '#000',
+          },
+        });
+
+        map.addLayer({
+          id: 'rescue-requests-tiles',
+          source: 'rescue-requests-tiles',
+          'source-layer': 'public.rescue_request',
+          type: 'circle',
+          paint: {
+            'circle-radius': 8,
+            'circle-color': '#ff0000',
+            'circle-stroke-width': 2,
+            'circle-stroke-color': '#ffffff',
+            'circle-opacity': 1,
           },
         });
       });

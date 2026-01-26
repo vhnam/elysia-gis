@@ -9,6 +9,7 @@ import useAuthStore from '@/stores/auth';
 export const useMapActions = () => {
   const router = useRouter();
   const { setToken, setUser } = useAuthStore();
+
   const signOutMutation = useSignOutMutation();
 
   const resetAuth = () => {

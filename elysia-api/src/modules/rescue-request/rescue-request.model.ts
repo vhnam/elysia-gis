@@ -43,6 +43,11 @@ export namespace RescueRequestModel {
     updatedAt: t.Union([t.Date(), t.String()]), // Accept both Date and ISO string
   });
 
+  export const getRescueRequestsResponse = t.Object({
+    data: t.Array(rescueRequestResponse),
+    total: t.Number(),
+  });
+
   /**
    * Type definitions
    */
@@ -50,4 +55,5 @@ export namespace RescueRequestModel {
   export type CreateRescueRequestRequest =
     typeof createRescueRequestRequest.static;
   export type RescueRequestResponse = typeof rescueRequestResponse.static;
+  export type GetRescueRequestsResponse = typeof getRescueRequestsResponse.static;
 }
